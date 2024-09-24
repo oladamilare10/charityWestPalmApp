@@ -50,7 +50,7 @@ const Banner = (props) => {
                       </div>
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
-                          src="https://theintercept.imgix.net/wp-uploads/sites/1/2016/09/white-helmets-ft.jpg?auto=compress%2Cformat&q=90&fit=crop&w=1200&h=800"
+                          src="https://media.licdn.com/dms/image/C4D12AQEnQIOpQeDHwQ/article-cover_image-shrink_720_1280/0/1619521100922?e=2147483647&v=beta&t=HrIyO8_o8j_biGarWf1zpCJPNz4b8wQKUxUa6x8ru_8"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -66,7 +66,7 @@ const Banner = (props) => {
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
-                          src="https://th.bing.com/th/id/OIF.GvA5gAoxcmH8EVzgVoLoVA?pid=ImgDet&rs=1"
+                          src="https://connect-assets.prosple.com/cdn/ff/wJsI5yR3eBGFwBb4VxCx6L6h8Q4_Cor4CrsdgWmc1Co/1567568623/public/styles/scale_890_no_upsize/public/2019-09/feature-article-Is-charity-work-right-for-me-838x484_2017.jpg?itok=M7QiD1Id"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
