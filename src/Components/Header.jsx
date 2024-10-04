@@ -46,9 +46,9 @@ const Header = (props) => {
             </Link>
             </Popover.Group>
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <button onClick={handleDonate} className="text-sm bg-transparent font-semibold leading-6 text-gray-900">
+            <Link to="/donate" className="text-sm bg-transparent font-semibold leading-6 text-gray-900">
                 Donate Now <span aria-hidden="true">&rarr;</span>
-            </button>
+            </Link>
             </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -95,12 +95,12 @@ const Header = (props) => {
                     </Link>
                 </div>
                 <div className="py-6">
-                    <button
+                    <Link to="/donate"
                     onClick={handleDonate}
                     className="-mx-3 block bg-transparent rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                     Donate Now
-                    </button>
+                    </Link>
                 </div>
                 </div>
             </div>

@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './Pages/Home'
 import Purpose from './Pages/Purpose'
 import Company from './Pages/Company'
+import Donate from './Pages/Donate'
+import Donation from './Pages/Donation'
 
 function App() {
 
@@ -15,6 +17,9 @@ function App() {
           <Route path="/charityWestPalmApp" element={<Home />} />
           <Route path="/Purpose" element={<Purpose />} />
           <Route path="/Company" element={<Company />} />
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/donate/:org" element={<Donation />} />
+          <Route path="/terms" element={<Donation />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Banner = (props) => {
   const handleDonate = props.handleDonate
@@ -83,13 +84,12 @@ const Banner = (props) => {
                 </div>
               </div>
 
-              <a
-                href="#"
-                onClick={handleDonate}
+              <Link
+                to="/donate"
                 className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
               >
                 Donate Now
-              </a>
+              </Link>
             </div>
           </div>
         </div>
