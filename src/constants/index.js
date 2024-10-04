@@ -333,3 +333,52 @@ export const orgs = {
 export const logo = siteLogo
 
 export const countFormat = new Intl.NumberFormat()
+
+
+export const faqSection =  [
+  {
+      question: 'How do I get bitcoin ?',
+      answer: 'As a complete beginner, you should take the following steps to successfully purchase bitcoins and subsequently deposit it into one of your existing Portofolios with us.',
+      bulletin: [
+          {
+              title: 'Create your own wallet',
+              description: ['Here are a few examples of places you can create a wallet. There are also tutorial videos to get you started.'],
+              links: [
+                  {tag: 'www.coinbase.com', link: 'https://www.coinbase.com/wallets/create'},
+                  {tag: 'www.exodus.io', link: 'https://www.exodus.io'},
+                  {tag: 'www.blockchain.com', link: 'https://www.blockchain.com/wallets/create'},
+                  {tag: 'Tutorial Video', video: true, link: 'https://www.youtube.com/watch?v=6SiZHOa_0Ew'}
+              ],
+              more: 'Your wallet is like your personal bitcoin bank account. Whenever you purchase bitcoins online, it is sent to your wallet address and you can thereafter send from your own wallet into your Piggykoin portfolio. Also, whenever you withdraw funds from your Piggykoin portfolio, it is sent to your specified wallet address where you have complete and anonymous control.'
+          },
+          {
+              title: 'Purchase bitcoins online.',
+              description: [
+                  'Upon creation of your own personal wallet, the next step is to fund your wallet by buying bitcoins online using any/all of the options below.',
+                  'Each option has varying payment methods(credit/debit cards, bank transfers, POLi, cash, e.t.c)',
+                  'Here are a few examples with simple to follow tutorial video.'
+              ],
+              links: [
+                  {tag: 'www.coinbase.com', link: 'https://www.coinbase.com/wallets/create'},
+                  {tag: 'www.exodus.io', link: 'https://www.exodus.io'},
+                  {tag: 'www.blockchain.com', link: 'https://www.blockchain.com/wallets/create'},
+                  {tag: 'Tutorial Video', video: true, link: 'https://www.youtube.com/watch?v=6SiZHOa_0Ew'}
+              ],
+              more: null
+          },
+          {
+              title: 'Fund your portfolio.',
+              description: ['Upon creation of your own personal wallet, the next step is to fund your wallet by buying bitcoins online using any/all of the options below.',
+                  'Simply head over to one of your personal wallet and send the applicable amount to the bitcoin address displayed on your Piggykoin checkout screen.',
+                  'You do not have to deposit all the funds at a go, Let\'s say you created a deposit of 0.5 BTC, you can choose to send any fraction of the amount and it will be immediately reflected in your portfolio balance.',
+                  'Here is an easy video tutorial on sending bitcoin from your own wallet'
+              ],
+              links: [
+                  {tag: 'Tutorial Video', video: true, link: 'https://www.youtube.com/watch?v=15oKacmTUTA'}
+              ],
+              more: 'Each option has varying payment methods(credit/debit cards, bank transfers, POLi, cash, e.t.c) Here are a few examples with simple to follow tutorial video',
+              note: 'Please note that Bitcoin-Cash(BCH) is different from Bitcoin(BTC). Payments sent from a BCH wallet to a BTC wallet will not reflect and funds will be lost.'
+          },
+      ]
+  }
+]
