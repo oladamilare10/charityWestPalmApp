@@ -26,7 +26,7 @@ import tnpch from '../assets/orgs/tnpch.png'
 import cffpa from '../assets/orgs/cffpa.jpeg'
 import humanfis from '../assets/orgs/humanfis.png'
 import actionNigeria from '../assets/orgs/ActionAid-Nigeria-AAN-310x280.jpg'
-import siteLogo from '../assets/logo-no-background.svg'
+import siteLogo from '../assets/logo-no-background.png'
 
 export const orgs = {
     "organizations": [
@@ -335,10 +335,9 @@ export const logo = siteLogo
 export const countFormat = new Intl.NumberFormat()
 
 
-export const faqSection =  [
-  {
+export const faqSection = {
       question: 'How do I get bitcoin ?',
-      answer: 'As a complete beginner, you should take the following steps to successfully purchase bitcoins and subsequently deposit it into one of your existing Portofolios with us.',
+      answer: 'As a complete beginner, you should take the following steps to successfully purchase bitcoins and subsequently deposit it into any wallet you wish.',
       bulletin: [
           {
               title: 'Create your own wallet',
@@ -368,7 +367,8 @@ export const faqSection =  [
           },
           {
               title: 'Fund your portfolio.',
-              description: ['Upon creation of your own personal wallet, the next step is to fund your wallet by buying bitcoins online using any/all of the options below.',
+              description: [
+                  'Upon creation of your own personal wallet, the next step is to fund your wallet by buying bitcoins online using any/all of the options below.',
                   'Simply head over to one of your personal wallet and send the applicable amount to the bitcoin address displayed on your Piggykoin checkout screen.',
                   'You do not have to deposit all the funds at a go, Let\'s say you created a deposit of 0.5 BTC, you can choose to send any fraction of the amount and it will be immediately reflected in your portfolio balance.',
                   'Here is an easy video tutorial on sending bitcoin from your own wallet'
@@ -381,4 +381,3 @@ export const faqSection =  [
           },
       ]
   }
-]

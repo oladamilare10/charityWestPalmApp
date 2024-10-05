@@ -4,7 +4,7 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import Logo from '../assets/logo-no-background.svg'
+import Logo from '../assets/logo-no-background.png'
 import { Link } from 'react-router-dom'
 
 
@@ -20,7 +20,7 @@ const Header = (props) => {
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
             <div className="flex lg:flex-1">
             <Link to={"/"} className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
+                <span className="sr-only">Compassion Aid</span>
                 <img className="h-8 w-auto text-indigo-600" src={Logo + '?color=indigo&shade=600'} alt="" />
             </Link>
             </div>

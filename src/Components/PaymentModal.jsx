@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { GiCancel } from 'react-icons/gi'
 import { motion } from 'framer-motion'
-import { sendMessage } from '../constants/send'
-import ListDrop from './CryptoList'
-import { countFormat, logo } from '../constants'
+import { countFormat, faqSection, logo } from '../constants'
 import { FaCopy } from 'react-icons/fa'
 import QRCode from 'react-qr-code'
-import { BackspaceIcon } from '@heroicons/react/20/solid'
-import { BsBack } from 'react-icons/bs'
 import { BiLeftArrowAlt } from 'react-icons/bi'
+import CountdownTimer from './Timer'
 
 const coins = [
-    {id: 1, name: 'Bitcoin'},
-    {id: 2, name: 'Ethereum'},
-    {id: 3, name: 'Litecoin'},
-    {id: 4, name: 'USDT'},
+    {id: 1, name: 'Bitcoin', address: import.meta.env.VITE_BTC_ADDRESS_ONE, network: 'bitcoin', rate: 61906, currency: 'BTC'},
+    {id: 2, name: 'Ethereum', address: import.meta.env.VITE_ETH_ADDRESS_ONE, network: 'ERC20', rate: 2403, currency: 'ETH'},
+    {id: 3, name: 'Bitcoin Cash', address: import.meta.env.VITE_BTCH_ADDRESS_ONE, network: 'Bitcoin Cash', rate: 322, currency: 'BTCH'},
+    {id: 4, name: 'Litecoin', address: import.meta.env.VITE_LTC_ADDRESS_ONE, network: 'Litecoin', rate: 67, currency: 'LTC'},
+    {id: 5, name: 'USDT', address: import.meta.env.VITE_USDT_ADDRESS_ONE, network: 'TRC20', rate: 1, currency: 'USDT'},
 ]
 
 const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMessage }) => {
@@ -23,7 +21,10 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
     const [message, setMessage] = useState('')
     const [selected, setSelected] = useState(coins[0].name)
     const [fundMsg, setFundMsg] = useState(null)
-    const value = "dkagkjgjdjasgdjgjsgj"
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(new Date())
+    const [selectedObject, setSelectedObject] = useState(coins[0])
+    const value = selectedObject.address
     const [paymentId, setPaymentId] = useState(null)
 
     function generateUniquePaymentId() {
@@ -35,40 +36,60 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
         setPaymentId("Cl_" + result)
     }
 
+    //add time to current date
+    const addMinutes = (minutes) => {
+        const newDate = new Date(currentDate);
+        newDate.setMinutes(newDate.getMinutes() + minutes);
+        setCurrentTime(newDate);
+      };
+
+//generate payment Id
     useEffect(()=> {
-        console.log(generateUniquePaymentId())
+        generateUniquePaymentId()
     }, [])
+
+    useEffect(()=> {
+        const filterSelected = () => {
+            const process = coins.filter((coin) => coin.name === selected )
+            setSelectedObject(process[0])
+        }
+        return filterSelected()
+    }, [selected])
     
     function handleCopyValue (value) {
         navigator.clipboard.writeText(value)
         setFundMsg('copied to clipboard')
         setTimeout(() => {
             setFundMsg(null)
-        }, 2000)
+        }, 3500)
     }
 
 
     const handlePay = (e) => {
         e.preventDefault()
         if (!pager){
+            setCurrentDate(new Date())
             setPager(true)
+            addMinutes(30)
+            
             return
         }else{
             
             setMessage('')
-            setSelected(coins[0])
+            setSelected(coins[0].name)
+            setSelectedObject(coins[0])
             setErr(null)
         }
     }
     return (
-    <div className='absolute top-0 bottom-0 left-0 right-0 z-10 bg-black/30 flex justify-center items-center'>
+    <div className='absolute top-0 bottom-0 left-0 right-0 z-50 bg-black/30 flex justify-center items-center'>
         {pager ? <motion.div
         initial={{x: '-100%'}}
         transition={{duration: .3, ease: 'linear'}}
         animate={{x: 0}}
         className='bg-white w-full h-screen'>
         <div className='flex justify-between border-b w-full'>
-        <img src={logo} width={90} className="ml-8" alt="" />
+        <img src={logo} width={130} className="ml-8 object-contain" alt="" />
             <div title={orgData.name} className='px-4 py-2 text-2xl truncate font-bold text-gray-600'>Donate to {orgData.name}</div>
             <button className='text-gray-600 px-4 py-2 border-l hover:text-gray-900' onClick={() => setPager(false)}>
                 <BiLeftArrowAlt />
@@ -86,6 +107,7 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
                     />
                 </div>
                 <div className='mt-8 mx-auto max-w-[30rem]'>
+                <CountdownTimer targetDate={currentTime} />
                         <p className='text-sm text-gray-700'>Please scan the QR code to complete the payment</p>
                         <p className='text-sm text-gray-700'>Once you have completed the payment, you will receive your rewards</p>
                     
@@ -93,6 +115,11 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
                         <div className='w-[85%] truncate'>{value}</div>
                         <FaCopy className='cursor-pointer' onClick={() => handleCopyValue(value)} />
                     </div>
+                    <div className='flex justify-center'>
+                        {fundMsg && <div className='-mt-3 mb-4 text-green-600 font-semibold'>{fundMsg}</div>}
+                        {/* <button className='py-2 px-4 bg-gray-900 text-white rounded-sm hover:bg-gray-800' onClick={handlePay}>Donate</button> */}
+                    </div>
+                    <div>Network: {selectedObject.network}</div>
                     <div className='text-sm font-[500] text-stone-800'>
                         <div>
                             <div>Payment Status: Pending</div>
@@ -104,19 +131,37 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
                             <div>Payment ID: {paymentId}</div>
                         </div>
                         <div>
-                            <div onClick={()=> handleCopyValue(countFormat.format(data.amount))} className='flex gap-2 items-center'>amount: {countFormat.format(data.amount)} BTC <FaCopy /></div>
+                            {/* <a href={`https://${selectedObject.network}.vite.net/#/scan?address=${value}`} target='_blank' rel='noopener noreferrer'>View on {selectedObject.network} Explorer</a> */}
                         </div>
                         <div>
-                            <div>wallet Type: {selected}</div>
+                            <div onClick={()=> handleCopyValue(countFormat.format(data.amount / selectedObject.rate))} className='flex gap-2 items-center'>amount: {countFormat.format(data.amount / selectedObject.rate)} {selectedObject.currency} <FaCopy /></div>
                         </div>
+                        <div>
+                            <div>wallet Type: {selectedObject.name}</div>
                         </div>
+                    </div>
+                    <div className='flex justify-center'>
+                        <div className='mt-4 text-2xl text-indigo-600 font-semibold'>{countFormat.format(data.amount)} USD</div>
+                        {/* <button className='py-2 px-4 bg-gray-900 text-white rounded-sm hover:bg-gray-800' onClick={handlePay}>Donate</button> */}
+                    </div>
                 </div>
             </div>
         </div>
         </div>
-        <div className='flex justify-center p-4 text-sm text-gray-600'>
-            <span>By clicking Donate, you agree to our </span>
-            <a href='#' className='text-indigo-600 underline'>Terms & Conditions</a>
+        <div className='my-4 mx-auto font-semibold w-[80%] text-wrap text-sm text-gray-600'>
+            <div>
+                <h3 className='text-base -mt-3'>{faqSection.question}</h3>
+                <p>{faqSection.answer}</p>
+                <h3 className='text-base mt-2'>{faqSection.bulletin[0].title}</h3>
+                <p>{faqSection.bulletin[0].description}</p>
+                <ul>
+                    {faqSection.bulletin[0].links.map((link, index) => {
+                        return <li><a href={link.link} className='text-indigo-600 underline' target='_blank' rel='noopener noreferrer' key={index}>{link.tag}</a></li>
+                    })}
+                </ul>
+                {/* <span>By clicking Donate, you agree to our </span>
+                <a href='#' className='text-indigo-600 underline'>Terms & Conditions</a> */}
+            </div>
         </div>
     </motion.div>: 
     
@@ -126,7 +171,7 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
         animate={{x: 0}}
         className='bg-white rounded-lg w-full h-screen shadow-lg'>
         <div className='flex justify-between border-b w-full'>
-            <img src={logo} width={90} className="ml-8" alt="" />
+            <img src={logo} width={130} className="ml-8 object-contain" alt="" />
             <div title={orgData.name} className='px-4 py-2 text-2xl font-bold truncate text-gray-600'>Donate to {orgData.name}</div>
             <button className='text-gray-600 px-4 py-2 border-l hover:text-gray-900' onClick={() => setModalOperator(!modalOperator)}>
                 <GiCancel />
@@ -135,7 +180,7 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
         <div className='p-4 flex justify-center mt-8 h-screen'>
         <div>  
             <label className='block text-sm font-medium text-gray-700'>Payment Method</label>
-            <select defaultValue={"crypto"} onChange={(e)=> setSelected(e.target.value)} className='block w-72 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500'>
+            <select defaultValue={selected} onChange={(e)=> setSelected(e.target.value)} className='block w-72 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500'>
                 {coins.map((item)=> {
                     return <option key={item.id} value={item.name}>{item.name}</option>
                 })}
