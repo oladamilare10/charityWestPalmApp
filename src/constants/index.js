@@ -27,6 +27,15 @@ import cffpa from '../assets/orgs/cffpa.jpeg'
 import humanfis from '../assets/orgs/humanfis.png'
 import actionNigeria from '../assets/orgs/ActionAid-Nigeria-AAN-310x280.jpg'
 import siteLogo from '../assets/logo-no-background.png'
+import hsic from '../assets/orgs/HSI_LogoV_K.jpg'
+import foundationBB from '../assets/orgs/4rNYe4ua.jpg'
+import awFoundation from '../assets/orgs/awFoundation.png'
+import edFund from '../assets/orgs/edFund.jpeg'
+import wwFund from '../assets//orgs/512x512bb.jpg'
+import greenSpace from '../assets/orgs/Greenpeace-Intl-Logo.png'
+import iucn from '../assets/orgs/IUCN logo.png'
+import ncFoundation from '../assets/orgs/Nigeria.webp'
+import cGreenFoundation from '../assets/orgs/cGreenFoundation.jpeg'
 
 export const orgs = {
     "organizations": [
@@ -65,6 +74,15 @@ export const orgs = {
         "goal": "Protects and cares for animals in England and Wales.",
         "purpose": "The RSPCA is the oldest animal welfare charity in the world, focusing on rescuing, rehabilitating, and rehoming animals. The organization works to prevent cruelty through education, campaigning for better animal welfare laws, and providing animal care. RSPCA inspectors investigate cruelty and neglect cases, offering medical care and shelter for mistreated animals.",
         "image_url": rspca
+      },
+      {
+        "continent": "America",
+        "country": "United States",
+        "link": "environmental-defense-fund",
+        "name": "Environmental Defense Fund (EDF)",
+        "goal": "Addresses climate change through sustainable solutions.",
+        "purpose": "The EDF focuses on fighting climate change, protecting ecosystems, and promoting renewable energy. The organization works to develop innovative solutions to environmental challenges, such as reducing carbon emissions, protecting wildlife habitats, and promoting sustainable agriculture. Through advocacy and policy reform, EDF seeks to build a more sustainable future for all.",
+        "image_url": edFund
       },
       {
         "continent": "Europe",
@@ -123,6 +141,15 @@ export const orgs = {
       {
         "continent": "America",
         "country": "United States",
+        "link": "the-nature-conservancy",
+        "name": "The Nature Conservancy",
+        "goal": "Conserves lands and waters globally to protect the environment.",
+        "purpose": "The Nature Conservancy focuses on conserving critical lands, waters, and ecosystems around the world. Through scientific research, advocacy, and community partnerships, it works to address global environmental challenges such as climate change, water scarcity, and biodiversity loss. The organization engages in large-scale conservation projects to protect wildlife and maintain healthy ecosystems for future generations.",
+        "image_url": "https://example.com/nature-conservancy.jpg"
+      },
+      {
+        "continent": "America",
+        "country": "United States",
         "link": "habitat-for-humanity",
         "name": "Habitat for Humanity",
         "goal": "Builds and repairs homes for people in need.",
@@ -137,6 +164,15 @@ export const orgs = {
         "goal": "Supports local communities by providing financial assistance to various local programs.",
         "purpose": "United Way Canada partners with local nonprofits, businesses, and volunteers to address pressing social issues such as poverty, education inequality, and healthcare access. The organization channels donations into community-driven projects that support vulnerable populations, ensuring that resources reach those in greatest need. Their initiatives range from food security programs to mental health services.",
         "image_url": uwc
+      },
+      {
+        "continent": "America",
+        "country": "Canada",
+        "link": "humane-society-international-canada",
+        "name": "Humane Society International/Canada",
+        "goal": "Works to protect animals worldwide and end cruelty.",
+        "purpose": "The Humane Society International/Canada advocates for animal welfare globally, focusing on ending animal cruelty through campaigns against factory farming, puppy mills, and animal testing. The organization also responds to wildlife emergencies, rescues animals from cruelty, and promotes better welfare standards for all animals. Their mission is to create a more compassionate world for animals through education, legislation, and hands-on care.",
+        "image_url": hsic
       },
       {
         "continent": "America",
@@ -164,6 +200,24 @@ export const orgs = {
         "goal": "Supports people in the UK and overseas with emergency aid and disaster relief.",
         "purpose": "The British Red Cross is part of the international Red Cross and Red Crescent Movement, helping people in crisis both at home and abroad. The organization provides first aid training, disaster response, and support for refugees. By assisting individuals affected by conflict, natural disasters, and social isolation, the British Red Cross plays a critical role in alleviating human suffering across the globe.",
         "image_url": redCross
+      },
+      {
+        "continent": "Europe",
+        "country": "France",
+        "link": "fondation-brigitte-bardot",
+        "name": "Fondation Brigitte Bardot",
+        "goal": "Promotes animal rights and fights against animal cruelty.",
+        "purpose": "The Fondation Brigitte Bardot campaigns against all forms of animal exploitation, from factory farming to the fur trade and animal testing. The foundation provides sanctuary for rescued animals and advocates for animal rights laws in France and internationally. It also works to raise public awareness of animal cruelty and encourages ethical treatment and respect for all animal species.",
+        "image_url": foundationBB
+      },
+      {
+        "continent": "Europe",
+        "country": "Switzerland",
+        "link": "international-union-conservation-nature",
+        "name": "International Union for Conservation of Nature (IUCN)",
+        "goal": "Conserves nature and promotes sustainable development worldwide.",
+        "purpose": "The IUCN is a global authority on the status of the natural world and the measures needed to safeguard it. They work to protect ecosystems, species, and the resources they provide to humanity. By integrating science and policy, the IUCN supports governments, NGOs, and local communities in conservation efforts, advocating for biodiversity, sustainable land use, and the mitigation of climate change.",
+        "image_url": iucn
       },
       {
         "continent": "Europe",
@@ -203,6 +257,42 @@ export const orgs = {
       },
       {
         "continent": "Africa",
+        "country": "Nigeria",
+        "link": "nigerian-conservation-foundation",
+        "name": "Nigerian Conservation Foundation (NCF)",
+        "goal": "Preserves Nigeria’s biodiversity and promotes environmental sustainability.",
+        "purpose": "The NCF focuses on preserving Nigeria’s ecosystems, promoting sustainable livelihoods, and addressing the impacts of climate change. By protecting forests, wetlands, and wildlife, the NCF ensures that Nigeria's natural resources are conserved for future generations. The organization is active in reforestation, anti-poaching campaigns, and community-based conservation initiatives.",
+        "image_url": ncFoundation
+      },
+      {
+        "continent": "Africa",
+        "country": "Kenya",
+        "link": "africa-wildlife-foundation",
+        "name": "African Wildlife Foundation",
+        "goal": "Conserves Africa’s wildlife and natural habitats.",
+        "purpose": "The African Wildlife Foundation focuses on the conservation of Africa's wildlife and natural landscapes, working with local communities to promote sustainable development. Through anti-poaching efforts, habitat preservation, and wildlife research, the organization aims to protect endangered species and support human-wildlife coexistence. AWF's mission is to ensure the survival of Africa's natural heritage while fostering a prosperous future for local communities.",
+        "image_url": awFoundation
+      },
+      {
+        "continent": "Global",
+        "country": "Global",
+        "link": "greenpeace",
+        "name": "Greenpeace",
+        "goal": "Fights to protect the environment and combat climate change.",
+        "purpose": "Greenpeace is an international environmental organization that uses non-violent, creative action to tackle climate change, protect biodiversity, and prevent environmental degradation. The organization campaigns for renewable energy, the reduction of plastic pollution, and the protection of oceans, forests, and wildlife. Greenpeace works through grassroots activism, lobbying, and global outreach to raise awareness and implement sustainable environmental practices.",
+        "image_url": greenSpace
+      },
+      {
+        "continent": "Global",
+        "country": "Global",
+        "link": "wwf",
+        "name": "World Wildlife Fund (WWF)",
+        "goal": "Protects endangered species and their habitats worldwide.",
+        "purpose": "The WWF works globally to protect the world's most vulnerable species and ecosystems. Through conservation programs, habitat preservation, and advocacy, the WWF addresses issues such as deforestation, poaching, and climate change. The organization engages in policy reform, community involvement, and scientific research to ensure the protection of biodiversity and the promotion of sustainable practices.",
+        "image_url": wwFund
+      },
+      {
+        "continent": "Africa",
         "country": "South Africa",
         "link": "gift-of-the-givers",
         "name": "Gift of the Givers",
@@ -236,6 +326,15 @@ export const orgs = {
       "goal": "Works on education, healthcare, and women's empowerment.",
       "purpose": "Smile Foundation empowers underprivileged children, youth, and women through a range of programs in education, healthcare, and livelihood support. The organization focuses on bridging the gap between poverty and opportunity by providing skills training, quality education, and healthcare services. Their goal is to create sustainable change by improving access to essential services and helping communities break the cycle of poverty.",
       "image_url": smileFoundation
+    },
+    {
+      "continent": "Asia",
+      "country": "China",
+      "link": "china-green-foundation",
+      "name": "China Green Foundation",
+      "goal": "Promotes afforestation and environmental protection in China.",
+      "purpose": "The China Green Foundation works to combat desertification, conserve forests, and address climate change through tree-planting initiatives and environmental education. The organization supports ecological restoration projects, helps mitigate environmental disasters, and promotes sustainable development. Its goal is to improve China’s environmental health while raising public awareness of ecological issues.",
+      "image_url": cGreenFoundation
     },
     {
       "continent": "Asia",
