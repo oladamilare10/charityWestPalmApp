@@ -1,10 +1,12 @@
+import { banners } from "../assets"
+
 const features = [
-    { name: 'Medical aid', description: 'Donations will be used to provide essential medical supplies, equipment, and personnel to treat the wounded and sick in Gaza. This includes medicines, bandages, surgical tools, ambulances, doctors, nurses, and paramedics.' },
-    { name: 'Humanitarian aid', description: 'Donations will be used to provide basic humanitarian needs, such as food, water, hygiene kits, blankets, and shelter, to the displaced and vulnerable populations in Gaza. This also includes supporting local organizations that are delivering aid on the ground.' },
-    { name: 'Education aid', description: 'Donations will be used to support the education and development of children and youth in Gaza, who have been severely affected by the war. This includes repairing damaged schools, providing learning materials, training teachers, and offering psychosocial support and recreational activities.' },
-    { name: 'Protection aid', description: 'Donations will be used to protect the rights and dignity of civilians in Gaza, especially women, children, and minorities, who are at risk of violence, abuse, and exploitation. This includes providing legal assistance, advocacy, and monitoring of human rights violations.' },
-    { name: 'Recovery aid', description: 'Donations will be used to help Gaza recover from the physical and economic damage caused by the war. This includes clearing rubble, restoring infrastructure, creating jobs, and supporting livelihoods.' },
-    { name: 'Resilience aid', description: 'Donations will be used to help Gaza build resilience and cope with future shocks and stresses. This includes strengthening local capacities, promoting social cohesion, and supporting peacebuilding initiatives.' },
+    { name: 'Medical aid', description: 'Donations will be used to provide essential medical supplies, equipment, and personnel to treat the wounded and sick where this facilities are not available. This includes medicines, bandages, surgical tools, ambulances, doctors, nurses, and paramedics.' },
+    { name: 'Humanitarian aid', description: 'Donations will be used to provide basic humanitarian needs, such as food, water, hygiene kits, blankets, and shelter, to the displaced and vulnerable populations. This also includes supporting local organizations that are delivering aid on the ground.' },
+    { name: 'Education aid', description: 'Donations will be used to support the education and development of children and youth in the world, who have been severely affected by the war. This includes repairing damaged schools, providing learning materials, training teachers, and offering psychosocial support and recreational activities.' },
+    { name: 'Protection aid', description: 'Donations will be used to protect the rights and dignity of civilians where ever you decide, especially women, children, and minorities, who are at risk of violence, abuse, and exploitation. This includes providing legal assistance, advocacy, and monitoring of human rights violations.' },
+    { name: 'Recovery aid', description: 'Donations are also be used to help recover from the physical and economic damage caused by war. This includes clearing rubble, restoring infrastructure, creating jobs, and supporting livelihoods.' },
+    { name: 'Resilience aid', description: 'Donations are also used to help build resilience and cope with future shocks and stresses in war affected areas. This includes strengthening local capacities, promoting social cohesion, and supporting peacebuilding initiatives.' },
   ]
 
 const Features = () => {
@@ -28,22 +30,22 @@ const Features = () => {
         </div>
         <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
           <img
-            src="https://s.w-x.co/util/image/w/in-manila2.jpg?crop=16:9&width=800&format=pjpg&auto=webp&quality=60"
+            src={banners.bannerOne}
             alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
             className="rounded-lg bg-gray-100"
           />
           <img
-            src="https://th.bing.com/th/id/OIF.E3Db6VGY7Pwpyypu5gdieA?pid=ImgDet&rs=1"
+            src={banners.bannerThree}
             alt="Top down view of walnut card tray with embedded magnets and card groove."
             className="rounded-lg bg-gray-100"
           />
           <img
-            src="https://cdn.abcotvs.com/dip/images/13885907_Israelis-evacuate-from-Gaza-Strip-AP-TN-img.jpg?w=1600"
+            src={banners.bannerSeven}
             alt="Side of walnut card tray with card groove and recessed card area."
             className="rounded-lg bg-gray-100"
           />
           <img
-            src="https://live.staticflickr.com/7166/6599753773_dd1c2aacec_z.jpg"
+            src={banners.bannerSix}
             alt="Walnut card tray filled with cards and card angled in dedicated groove."
             className="rounded-lg bg-gray-100"
           />

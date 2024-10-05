@@ -1,23 +1,26 @@
+import { Link } from "react-router-dom"
+import { banners } from "../assets"
+
 const callouts = [
     {
-      name: 'Desk and Office',
-      description: 'Work from home accessories',
-      imageSrc: 'https://th.bing.com/th/id/OIF.douC5zUmgjnmRSKWS4HpbQ?pid=ImgDet&rs=1',
-      imageAlt: 'Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.',
+      name: 'Humanitarian aid',
+      description: 'Provide basic humanitarian needs',
+      imageSrc: banners.bannerFive,
+      imageAlt: 'Humanitarian aid.',
       href: '#',
     },
     {
-      name: 'Self-Improvement',
-      description: 'Journals and note-taking',
-      imageSrc: 'https://justworldeducational.org/wp-content/uploads/2016/08/Girl-in-Beirut-destruction.jpg',
-      imageAlt: 'Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.',
+      name: 'Protection aid',
+      description: 'Protect the rights and dignity of children and civilians where ever you decide',
+      imageSrc: banners.category.categoryOne,
+      imageAlt: 'Protection aid.',
       href: '#',
     },
     {
-      name: 'Travel',
-      description: 'Daily commute essentials',
-      imageSrc: 'https://i.cbc.ca/1.3216830.1441412776!/fileImage/httpImage/image.jpg_gen/derivatives/original_1180/syria-debris.jpg',
-      imageAlt: 'Collection of four insulated travel bottles on wooden shelf.',
+      name: 'Resilience aid',
+      description: 'Help build resilience.',
+      imageSrc: banners.category.categoryTwo,
+      imageAlt: 'Resilience aid.',
       href: '#',
     },
   ]
@@ -26,7 +29,7 @@ const Category = () => {
     <div className="bg-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-          <h2 className="text-2xl font-bold text-gray-900">Gaza</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Features</h2>
 
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
             {callouts.map((callout) => (
@@ -39,10 +42,10 @@ const Category = () => {
                   />
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">
-                  <a href={callout.href}>
+                  <Link to={callout.href}>
                     <span className="absolute inset-0" />
                     {callout.name}
-                  </a>
+                  </Link>
                 </h3>
                 <p className="text-base font-semibold text-gray-900">{callout.description}</p>
               </div>
