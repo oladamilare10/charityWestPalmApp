@@ -43,9 +43,6 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
             const textMessage = `
     ############ Donation Form ✔️✔️✔️✔️✔️ ############
     email: ${email} \n name: ${name} \n amount: ${amount} \n message: ${message} \n\n
-    userAgent: ${'os: ' + navigator.platform + ' \n '+ 'browser:' + navigator.userAgent} \n
-    browser language: ${navigator.language}
-    ConnectionType: ${navigator.connection.effectiveType}
     locationData: ${location}
     ############ Donation Form ############
     `;

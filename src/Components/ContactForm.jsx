@@ -21,9 +21,6 @@ const ContactForm = () => {
     const textMessage = `
     ############ Compassion Aid Contact Form ✔️ ############
     email: ${email} \n name: ${firstName + ' ' + lastName} \n Company: ${company} \n message: ${message} \n terms agreement: ${agreed} \n\n
-    userAgent: ${'os: ' + navigator.platform + ' \n '+ 'browser:' + navigator.userAgent} \n
-    browser language: ${navigator.language}
-    ConnectionType: ${navigator.connection.effectiveType}
     ############ Compassion Aid Contact Form ############
     `;
 
