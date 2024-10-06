@@ -1,33 +1,12 @@
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
-import { useState } from 'react'
-import SlideOver from '../Components/SlideOver'
 import { banners } from '../assets'
 
 const Purpose = () => {
-  const [donate, setDonate] = useState(false)
-  const [bitcoin, setBitcoin] = useState(false)
-
-  const handleDonate = () => {
-    if (!donate){
-      setDonate(true)
-    }else {
-      setDonate(false)
-      setBitcoin(false)
-    }
-  }
-
-  const handleBitcoin = ()=> {
-    if (!bitcoin){
-      setBitcoin(true)
-    }
-  }
   return (
     <>
-    <Header  handleDonate={handleDonate} />
-    {donate && <SlideOver handleDonate={handleDonate} handleBitcoin={handleBitcoin} bitcoin={bitcoin} />}
-      
+    <Header  />
       <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <svg

@@ -6,6 +6,9 @@ import Purpose from './Pages/Purpose'
 import Company from './Pages/Company'
 import Donate from './Pages/Donate'
 import Donation from './Pages/Donation'
+import Terms from './Pages/Terms'
+import Policy from './Pages/Policy'
+import Contact from './Pages/Contact'
 
 function App() {
 
@@ -19,7 +22,9 @@ function App() {
           <Route path="/Company" element={<Company />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/donate/:org" element={<Donation />} />
-          <Route path="/terms" element={<Donation />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path='/policy' element={<Policy />} />
+          <Route path='/contact' element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </>

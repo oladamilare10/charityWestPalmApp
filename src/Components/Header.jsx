@@ -44,6 +44,9 @@ const Header = (props) => {
             <Link to={"/Company"} className="text-sm font-semibold leading-6 text-gray-900">
                 Company
             </Link>
+            <Link to={"/contact"} className="text-sm font-semibold leading-6 text-gray-900">
+                Contact
+            </Link>
             </Popover.Group>
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link to="/donate" className="text-sm bg-transparent font-semibold leading-6 text-gray-900">
@@ -92,6 +95,12 @@ const Header = (props) => {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                     Company
+                    </Link>
+                    <Link
+                    to={"/contact"}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                    Contact
                     </Link>
                 </div>
                 <div className="py-6">
