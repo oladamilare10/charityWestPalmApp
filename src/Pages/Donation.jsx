@@ -64,16 +64,16 @@ const Donation = () => {
                 )}
                 >
                 {filterOrgData.map((items, index) => (
-                    <ComboboxOption
-                    key={index}
-                    value={items}
-                    className="group flex cursor-default items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-white/10"
-                    >
-                        <Link to={'/donate/' + items.link} >
-                            <CheckIcon className="invisible size-4 fill-white group-data-[selected]:visible" />
-                            <div className="text-sm/6 text-white">{items.name}</div>
-                        </Link>
-                    </ComboboxOption>
+                    <Link to={'/donate/' + items.link} >
+                      <ComboboxOption
+                      key={index}
+                      value={items}
+                      className="group flex cursor-default items-center gap-2 rounded-lg py-1.5 px-3 select-none data-[focus]:bg-white/10"
+                      >
+                              <CheckIcon className="invisible size-4 fill-white group-data-[selected]:visible" />
+                              <div className="text-sm/6 text-white">{items.name}</div>
+                      </ComboboxOption>
+                    </Link>
                 ))}
                 </ComboboxOptions>
             </Combobox>}

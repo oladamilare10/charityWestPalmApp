@@ -63,7 +63,7 @@ const Terms = () => {
                 
                 <ul role="list" className="mt-8 space-y-8 text-gray-600">
                   <li className="flex gap-x-3">
-                    <CloudArrowUpIcon className="mt-1 h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                    <ServerIcon className="mt-1 h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
                     <span>
                       <strong className="font-semibold text-gray-900">Use of Donations </strong>
                       Donations made through Compassion Aid are directed towards charitable 
@@ -74,7 +74,7 @@ const Terms = () => {
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <LockClosedIcon className="mt-1 h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                    <ServerIcon className="mt-1 h-5 w-5 flex-none text-indigo-600" aria-hidden="true" />
                     <span>
                       <strong className="font-semibold text-gray-900">Refund Policy </strong>
                         All donations made to Compassion Aid are considered final and non-refundable 

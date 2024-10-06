@@ -123,7 +123,7 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
         </div>
         <div className='flex justify-center p-4 text-sm text-gray-600'>
           <span>By clicking Donate, you agree to our </span>
-          <a href='#' className='text-indigo-600 underline'>Terms & Conditions</a>
+          <a href='/terms' target='_blank' className='text-indigo-600 underline'>Terms & Conditions</a>
         </div>
     </motion.div>: 
     
@@ -158,7 +158,7 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
         </div>
         <div className='flex justify-center p-4 text-sm text-gray-600'>
           <span>By clicking Donate, you agree to our </span>
-          <a href='#' className='text-indigo-600 underline'>Terms & Conditions</a>
+          <a href='/terms' target='_blank' className='text-indigo-600 underline'>Terms & Conditions</a>
         </div>
     </motion.div>
     }

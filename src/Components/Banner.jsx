@@ -13,8 +13,8 @@ const Banner = (props) => {
               You can make a difference
             </h1>
             <p className="mt-4 text-xl text-gray-500">
-            A Fund Raiser for Emergency Relief and Recovery. The victims in Gaza are suffering from a humanitarian crisis and need 
-            all the help they can get.
+            Your generosity can make the world a better place. 
+            Choose a cause and make a difference today.
             </p>
           </div>
           <div>
