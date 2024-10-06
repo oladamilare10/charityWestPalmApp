@@ -7,10 +7,6 @@ const Contact = () => {
   return (
     <div>
       <Header />
-      <div>
-        <h1>Contact Us</h1>
-        <p>Please feel free to reach out to us for any questions or concerns you may have.</p>
-      </div>
       <ContactForm />
       <Footer />
     </div>
