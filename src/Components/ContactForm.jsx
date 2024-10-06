@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Field, Label, Switch } from '@headlessui/react'
 import { FaSpinner } from 'react-icons/fa6'
@@ -17,27 +16,7 @@ const ContactForm = () => {
     const [msg, setMsg] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const [location, setLocation] = useState('');
-        
-    function getLocationInfo() {
-        fetch(import.meta.env.VITE_LOCATION_URL)
-        .then(response => {
-            return response.json();
-        }, "jsonp")
-        .then(res => {
-            const ipData = `
-            ip: ${res.geoplugin_request}
-            latitude: ${res.geoplugin_latitude}
-            longitude: ${res.geoplugin_longitude}
-            timeZone: ${res.geoplugin_timezone}
-            currency: ${res.geoplugin_currencyCode} (${res.geoplugin_currencySymbol})
-            exchange: ${res.geoplugin_currencySymbol} ${res.geoplugin_currencyConverter} to $1
-            location: ${res.geoplugin_city}, ${res.geoplugin_regionName}, ${res.geoplugin_countryName} \n
-            `;
-            setLocation(ipData);
-        })
-        .catch(err => console.warn(err))
-    }
+    
 
     const textMessage = `
     ############ Compassion Aid Contact Form ✔️ ############
@@ -45,13 +24,8 @@ const ContactForm = () => {
     userAgent: ${'os: ' + navigator.platform + ' \n '+ 'browser:' + navigator.userAgent} \n
     browser language: ${navigator.language}
     ConnectionType: ${navigator.connection.effectiveType}
-    locationData: ${location}
     ############ Compassion Aid Contact Form ############
     `;
-    
-    useEffect(()=> {
-        getLocationInfo()
-    }, []);
 
 
     function handleSubmitForm (e) {
