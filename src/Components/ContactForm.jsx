@@ -70,9 +70,9 @@ const ContactForm = () => {
   return (
     <>
       <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div
+        {/* <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+            className="inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         >
             <div
             style={{
@@ -81,7 +81,7 @@ const ContactForm = () => {
             }}
             className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
             />
-        </div>
+        </div> */}
         <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
             <p className="mt-2 text-lg leading-8 text-gray-600">
