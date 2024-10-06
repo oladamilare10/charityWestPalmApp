@@ -38,6 +38,11 @@ const Donation = () => {
       <div className='mx-auto font-semibold flex max-w-7xl items-center p-6 lg:px-8'>
         <Link to="/donate" className='text-stone-500'>Donate</Link>{'> '}<span className="text-stone-800"> {orgData.name}</span>
       </div>
+        <div className="flex justify-center mt-8">
+          <button onClick={()=> setModalOperator(!modalOperator)} className="flex items-center px-6 py-3 text-sm font-medium leading-5 text-white transition duration-150 bg-blue-600 hover:bg-blue-700 rounded-md">
+            Donate Now
+          </button>
+        </div>
       <div className='mx-auto font-semibold max-w-7xl items-center p-6 lg:px-8'>
         <div className="text-xl font-bold tracking-tight flex items-center text-gray-900 sm:text-4xl">
             <div>Donate to {orgData.name}</div> 
@@ -87,11 +92,6 @@ const Donation = () => {
         </div>
 
         <div className='text-indigo-600'>{orgData.country}</div>
-        <div className="flex justify-center mt-8">
-          <button onClick={()=> setModalOperator(!modalOperator)} className="flex items-center px-6 py-3 text-sm font-medium leading-5 text-white transition duration-150 bg-blue-600 hover:bg-blue-700 rounded-md">
-            Donate Now
-          </button>
-        </div>
       </div>
       {modalOperator && <RaiseModal modalOperator={modalOperator} orgData={orgData} setModalOperator={setModalOperator} />}
       <Footer />

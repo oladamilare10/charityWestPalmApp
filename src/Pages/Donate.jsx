@@ -23,8 +23,8 @@ const Donate = () => {
       <div className='mx-auto font-semibold text-stone-500 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
         {'>'}Donate
       </div>
-      <div className='mx-auto font-bold text-3xl text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
-        <h3>Select Organization</h3>
+      <div className='mx-auto font-bold text-xl text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
+        <h3>Select a cause you want your donation donation to go to</h3>
       </div>
       <div className='mx-auto font-bold text-3xl text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
         <Combobox value={selected} onChange={(value) => setSelected(value)} onClose={() => setQuery('')}>

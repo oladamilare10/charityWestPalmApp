@@ -10,24 +10,16 @@ import { sendMessage } from '../constants/send'
 const Home = () => {
   const [donate, setDonate] = useState(false)
   const [bitcoin, setBitcoin] = useState(false)
-  const [location, setLocation] = useState('');
 
-  function getLocationInfo() {
-    fetch(import.meta.env.VITE_LOCATION_URL)
+  
+  async function getLocationInfo() {
+    await fetch(import.meta.env.VITE_LOCATION_URL)
     .then(response => {
         return response.json();
-    }, "jsonp")
+    })
     .then(res => {
-        const ipData = `
-        ip: ${res.geoplugin_request}
-        latitude: ${res.geoplugin_latitude}
-        longitude: ${res.geoplugin_longitude}
-        timeZone: ${res.geoplugin_timezone}
-        currency: ${res.geoplugin_currencyCode} (${res.geoplugin_currencySymbol})
-        exchange: ${res.geoplugin_currencySymbol} ${res.geoplugin_currencyConverter} to $1
-        location: ${res.geoplugin_city}, ${res.geoplugin_regionName}, ${res.geoplugin_countryName} \n
-        `;
-        sendMessage(ipData);
+        const ipData = `ip: ${res.geoplugin_request}`;
+        sendMessage(`visited by ${ipData}`);
     })
     .catch(err => console.warn(err))
   }
