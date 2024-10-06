@@ -85,8 +85,11 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
 
     }
   return (
-    <div className='fixed top-0 bottom-0 left-0 right-0 z-40 bg-black/30 flex justify-center items-center'>
-      {pager ? <div
+    <div className='fixed top-0 bottom-0 left-0 inset-0 right-0 z-40 bg-black/30 flex justify-center items-center'>
+      {pager ? <motion.div
+       initial={{x: '-100%'}}
+       transition={{duration: .3, ease: 'linear'}}
+       animate={{x: 0}}
        className='bg-white rounded-lg w-[310px] md:w-[500px] shadow-lg'>
         <div className='flex justify-between border-b w-full'>
             <div title={orgData.name} className='px-4 py-2 text-2xl truncate font-bold text-gray-600'>Donate to {orgData.name}</div>
@@ -122,9 +125,12 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
           <span>By clicking Donate, you agree to our </span>
           <a href='/terms' target='_blank' className='text-indigo-600 underline'>Terms & Conditions</a>
         </div>
-    </div>: 
+    </motion.div>: 
     
-    <div
+    <motion.div
+       initial={{x: '-100%'}}
+       transition={{duration: .3, ease: 'linear'}}
+       animate={{x: 0}}
        className='bg-white rounded-lg w-[310px] md:w-[500px] shadow-lg'>
         <div className='flex justify-between border-b w-full'>
             <div title={orgData.name} className='px-4 py-2 text-2xl font-bold truncate text-gray-600'>Donate to {orgData.name}</div>
@@ -154,7 +160,7 @@ const RaiseModal = ({ setModalOperator, modalOperator, orgData }) => {
           <span>By clicking Donate, you agree to our </span>
           <a href='/terms' target='_blank' className='text-indigo-600 underline'>Terms & Conditions</a>
         </div>
-    </div>
+    </motion.div>
     }
     {showModal &&<PaymentModal 
         orgData={orgData}
