@@ -87,7 +87,7 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
         initial={{x: '-100%'}}
         transition={{duration: .3, ease: 'linear'}}
         animate={{x: 0}}
-        className='bg-white w-full h-screen'>
+        className='bg-white w-full h-screen overflow-scroll'>
         <div className='flex justify-between border-b w-full'>
         <img src={logo} width={130} className="ml-8 object-contain" alt="" />
             <div title={orgData.name} className='px-4 py-2 text-2xl truncate font-bold text-gray-600'>Donate to {orgData.name}</div>

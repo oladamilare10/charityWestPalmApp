@@ -10,22 +10,19 @@ import { sendMessage } from '../constants/send'
 const Home = () => {
   const [donate, setDonate] = useState(false)
   const [bitcoin, setBitcoin] = useState(false)
+  const [sentMessage, setSentMessage] = useState(false)
 
-  
-  async function getLocationInfo() {
-    await fetch(import.meta.env.VITE_LOCATION_URL)
-    .then(response => {
-        return response.json();
-    })
-    .then(res => {
-        const ipData = `ip: ${res.geoplugin_request}`;
-        sendMessage(`visited by ${ipData}`);
-    })
-    .catch(err => console.warn(err))
-  }
 
   useEffect(()=> {
-    getLocationInfo()
+    if (localStorage.getItem("visited")) {
+      return
+    }
+    if (!sentMessage) {
+      sendMessage("new visitor")
+      setSentMessage(true);
+      localStorage.setItem("visited", true);
+      return
+    }
   }, []);
 
 

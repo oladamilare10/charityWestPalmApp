@@ -36,6 +36,7 @@ import greenSpace from '../assets/orgs/Greenpeace-Intl-Logo.png'
 import iucn from '../assets/orgs/IUCN logo.png'
 import ncFoundation from '../assets/orgs/Nigeria.webp'
 import cGreenFoundation from '../assets/orgs/cGreenFoundation.jpeg'
+import theNature from '../assets/orgs/The-Nature-Conservancy-Logo.webp'
 
 export const orgs = {
     "organizations": [
@@ -145,7 +146,7 @@ export const orgs = {
         "name": "The Nature Conservancy",
         "goal": "Conserves lands and waters globally to protect the environment.",
         "purpose": "The Nature Conservancy focuses on conserving critical lands, waters, and ecosystems around the world. Through scientific research, advocacy, and community partnerships, it works to address global environmental challenges such as climate change, water scarcity, and biodiversity loss. The organization engages in large-scale conservation projects to protect wildlife and maintain healthy ecosystems for future generations.",
-        "image_url": "https://example.com/nature-conservancy.jpg"
+        "image_url": theNature
       },
       {
         "continent": "America",

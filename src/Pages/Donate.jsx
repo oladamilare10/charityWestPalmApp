@@ -51,7 +51,7 @@ const Donate = () => {
                 )}
                 >
                 {filterOrgData.map((items, index) => (
-                    <Link to={'/donate/' + items.link} >
+                    <Link to={'/foundation/' + items.link} >
                         <ComboboxOption
                         key={index}
                         value={items}
@@ -71,7 +71,7 @@ const Donate = () => {
             {orgs.organizations.map((item, index) => {
                 if(item.continent === 'Global') {
                     return (
-                        <Link to={"/donate/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
+                        <Link to={"/foundation/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
                             <div className='flex px-4 w-full py-2 justify-start border-b'>
                                 <div className='h-10 w-10 border rounded-full mr-4 overflow-hidden'>
                                     <img src={item.image_url} className='w-full object-cover h-full rounded-full' />
@@ -96,7 +96,7 @@ const Donate = () => {
             {orgs.organizations.map((item, index) => {
                 if(item.continent === 'America') {
                     return (
-                        <Link to={"/donate/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
+                        <Link to={"/foundation/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
                             <div className='flex px-4 w-full py-2 justify-start border-b'>
                                 <div className='h-10 w-10 border rounded-full mr-4 overflow-hidden'>
                                     <img src={item.image_url} className='w-full object-cover h-full rounded-full' />
@@ -121,7 +121,7 @@ const Donate = () => {
             {orgs.organizations.map((item, index) => {
                 if(item.continent === 'Europe') {
                     return (
-                        <Link to={"/donate/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
+                        <Link to={"/foundation/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
                             <div className='flex px-4 w-full py-2 justify-start border-b'>
                                 <div className='h-10 w-10 border rounded-full mr-4 overflow-hidden'>
                                     <img src={item.image_url} className='w-full object-cover h-full rounded-full' />
@@ -146,7 +146,7 @@ const Donate = () => {
             {orgs.organizations.map((item, index) => {
                 if(item.continent === 'Africa') {
                     return (
-                        <Link to={"/donate/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
+                        <Link to={"/foundation/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
                             <div className='flex px-4 w-full py-2 justify-start border-b'>
                                 <div className='h-10 w-10 border rounded-full mr-4 overflow-hidden'>
                                     <img src={item.image_url} className='w-full object-cover h-full rounded-full' />
@@ -171,7 +171,7 @@ const Donate = () => {
             {orgs.organizations.map((item, index) => {
                 if(item.continent === 'Asia') {
                     return (
-                        <Link to={"/donate/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
+                        <Link to={"/foundation/" + item.link} key={index} className='border cursor-pointer hover:scale-105 duration-300 mb-4 rounded-md font-semibold text-gray-700 flex flex-col w-[310px] md:w-[350px] items-center justify-between p-0 lg:px-2 shadow-md'>
                             <div className='flex px-4 w-full py-2 justify-start border-b'>
                                 <div className='h-10 w-10 border rounded-full mr-4 overflow-hidden'>
                                     <img src={item.image_url} className='w-full object-cover h-full rounded-full' />

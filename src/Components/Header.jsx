@@ -38,6 +38,9 @@ const Header = (props) => {
             <Link to={"/"} className="text-sm font-semibold leading-6 text-gray-900">
                 Home
             </Link>
+            <Link to={"/foundations"} className="text-sm font-semibold leading-6 text-gray-900">
+                Foundations
+            </Link>
             <Link to={"/Purpose"} className="text-sm font-semibold leading-6 text-gray-900">
                 Purpose
             </Link>
@@ -83,6 +86,12 @@ const Header = (props) => {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                     Home
+                    </Link>
+                    <Link
+                    to={"/foundations"}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                    Foundations
                     </Link>
                     <Link
                     to={"/Purpose"}

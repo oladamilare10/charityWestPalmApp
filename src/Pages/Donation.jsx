@@ -39,9 +39,9 @@ const Donation = () => {
         <Link to="/donate" className='text-stone-500'>Donate</Link>{'> '}<span className="text-stone-800"> {orgData.name}</span>
       </div>
         <div className="flex justify-center mt-8">
-          <button onClick={()=> setModalOperator(!modalOperator)} className="flex items-center px-6 py-3 text-sm font-medium leading-5 text-white transition duration-150 bg-blue-600 hover:bg-blue-700 rounded-md">
+          <Link to={`/donate?donate-to=${orgData.link}`} className="flex items-center px-6 py-3 text-sm font-medium leading-5 text-white transition duration-150 bg-blue-600 hover:bg-blue-700 rounded-md">
             Donate Now
-          </button>
+          </Link>
         </div>
       <div className='mx-auto font-semibold max-w-7xl items-center p-6 lg:px-8'>
         <div className="text-xl font-bold tracking-tight flex items-center text-gray-900 sm:text-4xl">

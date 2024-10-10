@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+input{
+    @apply outline-1 outline-indigo-600
+}

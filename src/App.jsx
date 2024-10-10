@@ -9,6 +9,7 @@ import Donation from './Pages/Donation'
 import Terms from './Pages/Terms'
 import Policy from './Pages/Policy'
 import Contact from './Pages/Contact'
+import DonatePage from './Pages/DonatePage'
 
 function App() {
 
@@ -20,8 +21,9 @@ function App() {
           <Route path="/charityWestPalmApp" element={<Home />} />
           <Route path="/Purpose" element={<Purpose />} />
           <Route path="/Company" element={<Company />} />
-          <Route path="/donate" element={<Donate />} />
-          <Route path="/donate/:org" element={<Donation />} />
+          <Route path="/foundations" element={<Donate />} />
+          <Route path="/donate" element={<DonatePage />} />
+          <Route path="/foundation/:org" element={<Donation />} />
           <Route path="/terms" element={<Terms />} />
           <Route path='/policy' element={<Policy />} />
           <Route path='/contact' element={<Contact />} />
