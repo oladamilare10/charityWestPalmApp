@@ -106,7 +106,7 @@ const PersonalDetailsComponent = ({
         totalAmount = Number(amount) + Number(tax)
     }
     return (
-        <div className='mx-auto max-w-3xl'>
+        <div className='mx-auto max-w-3xl px-4'>
             <h2 className='text-2xl font-semibold text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
                 Personal Details
             </h2>
