@@ -82,7 +82,7 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
         }
     }
     return (
-    <div className='absolute top-0 bottom-0 left-0 right-0 z-50 bg-black/30 flex justify-center items-center'>
+    <div className='fixed top-0 bottom-0 left-0 right-0 z-50 bg-black/30 flex justify-center items-center'>
         {pager ? <motion.div
         initial={{x: '-100%'}}
         transition={{duration: .3, ease: 'linear'}}
