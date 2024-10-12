@@ -106,7 +106,7 @@ const PersonalDetailsComponent = ({
         totalAmount = Number(amount) + Number(tax)
     }
     return (
-        <div className='mx-auto max-w-3xl px-4'>
+        <div className='mx-auto max-w-3xl px-8'>
             <h2 className='text-2xl font-semibold text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
                 Personal Details
             </h2>
@@ -185,7 +185,7 @@ const PersonalDetailsComponent = ({
                 <label className='w-full text-base font-semibold text-gray-700 my-4' htmlFor='anonymous'>Anonymous Donation</label>
             </div>
             
-      <div className="my-4 mb-12">
+      <div className="my-4 mb-16">
         <div className="text-red-500 text-sm font-semibold">{err && err}</div>
         <div className="text-green-500 text-sm font-semibold">{msg && msg}</div>
         <button onClick={handleSubmit} className="bg-indigo-600 text-white font-semibold py-3 px-8 rounded-md">{loadings ? <FaSpinner className='animate-spin' /> : 'Donate $' + countFormat.format(totalAmount)}</button>
@@ -385,7 +385,7 @@ const DonateForm = ({ page, setPage }) => {
       </div>
       <div className='text-gray-600 text-lg my-4'>$10 is the minimum online donation. All donations are tax deductible.</div>
       <div className='flex gap-3 my-4 bg-indigo-500/5 border-indigo-400 text-lg border px-5 py-3 rounded-md'>
-        <input type="checkbox" id='tax' name="tax" value={addTaxable} onChange={e=> setAddTaxable(e.target.checked)} />
+        <input type="checkbox" id='tax' className='w-6 h-6' name="tax" value={addTaxable} onChange={e=> setAddTaxable(e.target.checked)} />
         <label htmlFor='tax' className='block text-base font-medium text-gray-700'>Please make my gift go further by adding ${tax} to cover the processing fees and other expenses associated with my donation.</label>
       </div>
 
