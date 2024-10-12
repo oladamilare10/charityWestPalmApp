@@ -123,7 +123,7 @@ const PersonalDetailsComponent = ({
                         onChange={(e)=> setName(e.target.value)}
                         type="text"
                         autoComplete="name"
-                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     </div>
                 </div>
@@ -138,7 +138,7 @@ const PersonalDetailsComponent = ({
                         onChange={(e)=> setEmail(e.target.value)}
                         type="email"
                         autoComplete="email"
-                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     </div>
                 </div>
@@ -153,11 +153,11 @@ const PersonalDetailsComponent = ({
                         onChange={(e)=> setPhone(e.target.value)}
                         type="tel"
                         autoComplete="phone"
-                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                     </div>
                 </div>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 items-center'>
                     <input type='checkbox' id='organize' checked={organize} onChange={(e) => setOrganize(e.target.checked)} />
                     <label className='w-full text-base font-semibold text-gray-700 my-4' htmlFor='organize'>This donation is on behalf of a company or organization.</label>
                 </div>
@@ -173,19 +173,19 @@ const PersonalDetailsComponent = ({
                             onChange={(e)=> setOrganization(e.target.value)}
                             type="text"
                             autoComplete="organization"
-                            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                         </div>
                     </div>
                 }
             </div>
             </div>}
-            <div className='flex gap-2'>
+            <div className='flex gap-2 items-center'>
                 <input type='checkbox' id='anonymous' checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} />
                 <label className='w-full text-base font-semibold text-gray-700 my-4' htmlFor='anonymous'>Anonymous Donation</label>
             </div>
             
-      <div className="my-4">
+      <div className="my-4 mb-12">
         <div className="text-red-500 text-sm font-semibold">{err && err}</div>
         <div className="text-green-500 text-sm font-semibold">{msg && msg}</div>
         <button onClick={handleSubmit} className="bg-indigo-600 text-white font-semibold py-3 px-8 rounded-md">{loadings ? <FaSpinner className='animate-spin' /> : 'Donate $' + countFormat.format(totalAmount)}</button>
