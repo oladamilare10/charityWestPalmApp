@@ -15,6 +15,7 @@ const Home = () => {
 
   useEffect(()=> {
     if (localStorage.getItem("visited")) {
+      setSentMessage(true)
       return
     }
     if (!sentMessage) {

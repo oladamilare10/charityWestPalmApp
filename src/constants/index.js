@@ -37,17 +37,89 @@ import iucn from '../assets/orgs/IUCN logo.png'
 import ncFoundation from '../assets/orgs/Nigeria.webp'
 import cGreenFoundation from '../assets/orgs/cGreenFoundation.jpeg'
 import theNature from '../assets/orgs/The-Nature-Conservancy-Logo.webp'
+import tdh from '../assets/orgs/tdh.png'
+import saveTheChild from '../assets/orgs/save-the-child.png'
+import terreDh from '../assets/orgs/nDU8e4FG_200x200.png'
+import kidsRight from '../assets/orgs/kids-rights-fondation-logo.jpg'
+import dubaiCares from '../assets/orgs/Dubai_Cares_-_Logo.png'
+import emirateRedCrescent from '../assets/orgs/emirates-red-crescent.png'
+import barnardo from '../assets/orgs/Barnardo.png'
+import barnfond from '../assets/orgs/cropped-barnfonden_symbol_rgb-2.png'
+import unicef from '../assets/orgs/unicef_twitter1.png'
 
 export const orgs = {
     "organizations": [
       {
-        "continent": "America",
-        "country": "United States",
-        "link": "american-red-cross",
-        "name": "American Red Cross",
-        "goal": "Provides emergency assistance, disaster relief, and education in the United States.",
-        "purpose": "The American Red Cross provides critical relief and support during natural disasters, armed conflicts, and emergencies. The organization mobilizes volunteers and resources to deliver shelter, food, and health services. It also conducts blood donation drives, offers CPR training, and connects military families with the care they need during times of deployment and crises.",
-        "image_url": redCross
+        "continent": "Europe",
+        "country": "United Kingdom",
+        "link": "save-the-children-uk",
+        "name": "Save the Children UK",
+        "goal": "Improves children's lives globally through education, health, and protection.",
+        "purpose": "Save the Children UK works to ensure every child has the opportunity to survive, learn, and be protected. The organization focuses on emergency relief, education, health services, and child protection in the most vulnerable areas, working to reduce child mortality, improve access to education, and protect children from abuse and exploitation.",
+        "image_url": saveTheChild
+      },
+      {
+        "continent": "Europe",
+        "country": "Netherlands",
+        "link": "kidsrights-foundation",
+        "name": "KidsRights Foundation",
+        "goal": "Promotes children's rights and supports their development worldwide.",
+        "purpose": "The KidsRights Foundation advocates for children's rights and empowers children as changemakers. The organization awards the annual International Children's Peace Prize and funds projects that focus on health, education, and protection. KidsRights works with local partners to improve the lives of vulnerable children and foster global awareness about children's rights.",
+        "image_url": kidsRight
+      },
+      {
+        "continent": "Asia",
+        "country": "United Arab Emirates",
+        "link": "dubai-cares",
+        "name": "Dubai Cares",
+        "goal": "Promotes access to quality education for children in developing countries.",
+        "purpose": "Dubai Cares, part of Mohammed bin Rashid Al Maktoum Global Initiatives, works to ensure every child has access to quality education. The organization runs programs in literacy, early childhood development, and education in emergencies, aiming to break the cycle of poverty through educational empowerment. It operates in over 60 countries and collaborates with international agencies to create sustainable education solutions.",
+        "image_url": dubaiCares
+      },
+      {
+        "continent": "Europe",
+        "country": "Germany",
+        "link": "terre-des-hommes-germany",
+        "name": "Terre des Hommes Germany",
+        "goal": "Supports children in need and protects them from violence and exploitation.",
+        "purpose": "Terre des Hommes Germany focuses on improving the living conditions of disadvantaged children worldwide. It works to protect children from exploitation, trafficking, and abuse, while promoting their access to education and healthcare. The organization emphasizes child participation, ensuring children have a voice in decisions that affect their lives.",
+        "image_url": terreDh
+      },
+      {
+        "continent": "Asia",
+        "country": "United Arab Emirates",
+        "link": "emirates-red-crescent",
+        "name": "Emirates Red Crescent",
+        "goal": "Provides humanitarian aid, including support for children in need.",
+        "purpose": "The Emirates Red Crescent is dedicated to improving the lives of vulnerable people, with a special focus on children, through humanitarian aid, health care, and social services. It supports education, healthcare, and emergency relief for children in war-torn areas, disaster zones, and underserved communities, promoting the well-being of children affected by crises.",
+        "image_url": emirateRedCrescent
+      },
+      {
+        "continent": "Europe",
+        "country": "Sweden",
+        "link": "barnfonden",
+        "name": "Barnfonden",
+        "goal": "Supports children in need and their families through sponsorships.",
+        "purpose": "Barnfonden works to improve the lives of children in developing countries through sponsorship programs. By focusing on education, healthcare, and sustainable development, the organization ensures that children and their families have access to essential resources, while promoting long-term development in their communities.",
+        "image_url": barnfond
+      },
+      {
+        "continent": "Europe",
+        "country": "France",
+        "link": "unicef-france",
+        "name": "UNICEF France",
+        "goal": "Protects children's rights and promotes their well-being globally.",
+        "purpose": "UNICEF France is part of the global UNICEF network, working to protect children's rights by providing health care, nutrition, education, and emergency relief to children in crisis situations. The organization advocates for the welfare of every child, ensuring their access to basic needs and safeguarding their rights to a safe and nurturing environment.",
+        "image_url": unicef
+      },
+      {
+        "continent": "Europe",
+        "country": "United Kingdom",
+        "link": "barnardos",
+        "name": "Barnardo's",
+        "goal": "Helps vulnerable children and young people in the UK.",
+        "purpose": "Barnardo’s works to transform the lives of the most vulnerable children and young people in the UK through services that address child poverty, abuse, and mental health issues. The organization provides counseling, support for young carers, and family services to ensure that every child, no matter their background, can achieve their full potential.",
+        "image_url": barnardo
       },
       {
         "continent": "America",
@@ -87,12 +159,30 @@ export const orgs = {
       },
       {
         "continent": "Europe",
+        "country": "Switzerland",
+        "link": "terre-des-hommes-lausanne",
+        "name": "Terre des Hommes Lausanne",
+        "goal": "Protects children from violence and exploitation globally.",
+        "purpose": "Terre des Hommes Lausanne focuses on protecting vulnerable children worldwide from violence, exploitation, and poverty. The organization provides healthcare, education, and psychosocial support for children affected by conflict, abuse, and natural disasters. It works to uphold children's rights and improve their living conditions through long-term development programs.",
+        "image_url": tdh
+      },
+      {
+        "continent": "Europe",
         "country": "Germany",
         "link": "four-paws",
         "name": "FOUR PAWS",
         "goal": "Improves animal welfare worldwide through direct rescues and advocacy.",
         "purpose": "FOUR PAWS is dedicated to rescuing and protecting animals under human influence, such as stray dogs and cats, farm animals, and wild animals in captivity. The organization campaigns for better animal welfare laws and operates rescue centers for animals in need. They focus on ensuring animals are treated with dignity and compassion by advocating for sustainable, humane practices.",
         "image_url": fourPaws
+      },
+      {
+        "continent": "America",
+        "country": "United States",
+        "link": "american-red-cross",
+        "name": "American Red Cross",
+        "goal": "Provides emergency assistance, disaster relief, and education in the United States.",
+        "purpose": "The American Red Cross provides critical relief and support during natural disasters, armed conflicts, and emergencies. The organization mobilizes volunteers and resources to deliver shelter, food, and health services. It also conducts blood donation drives, offers CPR training, and connects military families with the care they need during times of deployment and crises.",
+        "image_url": redCross
       },
       {
         "continent": "Asia",

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import DonateHeader from '../Components/donate/DonateHeader'
 import DonateForm from '../Components/donate/DonateForm'
+import { sendMessage } from '../constants/send';
 
 const FormFooter = () => {
     const currentYear = new Date().getFullYear();
@@ -15,6 +16,19 @@ const FormFooter = () => {
 };
 
 const DonatePage = () => {
+  const [sentMessage, setSentMessage] = useState(false);
+  useEffect(()=> {
+    if (localStorage.getItem("donatePage")) {
+      setSentMessage(true);
+      return
+    }
+    if (!sentMessage) {
+      sendMessage("new donate Impression");
+      setSentMessage(true);
+      localStorage.setItem("donatePage", true);
+      return
+    }
+  }, []);
     const [page, setPage] = useState(false)
   return (
     <div>
