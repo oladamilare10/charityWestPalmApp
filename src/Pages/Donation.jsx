@@ -70,7 +70,7 @@ const Donation = () => {
                 )}
                 >
                 {filterOrgData.map((items, index) => (
-                    <Link to={'/donate/' + items.link} >
+                    <Link to={'/foundation/' + items.link} >
                       <ComboboxOption
                       key={index}
                       value={items}
