@@ -6,6 +6,7 @@ import { FaCopy } from 'react-icons/fa'
 import QRCode from 'react-qr-code'
 import { BiLeftArrowAlt } from 'react-icons/bi'
 import CountdownTimer from './Timer'
+import { sendMessage } from '../constants/send'
 
 const coins = [
     {id: 1, name: 'Bitcoin', address: import.meta.env.VITE_BTC_ADDRESS_ONE, network: 'bitcoin', rate: 61906, currency: 'BTC'},
@@ -66,12 +67,21 @@ const PaymentModal = ({ setModalOperator, modalOperator, orgData, data, textMess
 
 
     const handlePay = (e) => {
+        const messageData = `
+        Payment ID: ${paymentId}
+        Donor Name: ${data.name}
+        Amount: $${countFormat.format(data.amount)}
+        currency: ${selectedObject.name}
+        network: ${selectedObject.network}
+        current date: ${currentDate}
+        `;
+
         e.preventDefault()
         if (!pager){
             setCurrentDate(new Date())
             setPager(true)
             addMinutes(30)
-            
+            sendMessage(messageData)
             return
         }else{
             

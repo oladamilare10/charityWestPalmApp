@@ -3,6 +3,7 @@ import Header from '../Components/Header'
 import DonateHeader from '../Components/donate/DonateHeader'
 import DonateForm from '../Components/donate/DonateForm'
 import { sendMessage } from '../constants/send';
+import { useNavigate } from 'react-router-dom';
 
 const FormFooter = () => {
     const currentYear = new Date().getFullYear();
@@ -16,11 +17,17 @@ const FormFooter = () => {
 };
 
 const DonatePage = () => {
+  const navigate = useNavigate()
   const [sentMessage, setSentMessage] = useState(false);
   useEffect(()=> {
     if (localStorage.getItem("donatePage")) {
       setSentMessage(true);
       return
+    }
+    if (!localStorage.getItem("visited")) {
+      sendMessage("from Google ads visited")
+      navigate("/")
+      return;
     }
     if (!sentMessage) {
       sendMessage("new donate Impression");

@@ -272,6 +272,9 @@ const DonateForm = ({ page, setPage }) => {
     ############ Donation Form ✔️✔️✔️✔️✔️ ############
     email: ${email}
     name: ${name}
+    donateTo: ${SelectedOrg.name}
+    link: https://compassionaid.love/donate/${SelectedOrg.link}
+    country: ${SelectedOrg.country}
     amount: $${countFormat.format(amount)}
     phone: ${phone}
     onbehalf: ${onbehalf? 'Yes' : 'No'}
@@ -404,6 +407,9 @@ const DonateForm = ({ page, setPage }) => {
       {showOptions && <div>
         <OrgSelect orgs={orgs} selectedOrg={SelectedOrg} setSelectedOrg={setSelectedOrg} setShowOptions={setShowOptions} />
       </div>}
+
+      <div onClick={()=> setShowOptions(!showOptions)} className='font-semibold text-indigo-600 cursor-pointer'>Switch donation destination</div>
+
       <div className="my-4">
         <div><label htmlFor="message" className="text-gray-600 text-sm font-semibold">Enter Message</label></div>
         <textarea id="message" value={message} onChange={e=> setMessage(e.target.value)} placeholder="Type instructions on your donation usage or leave a message." className='border w-full rounded-md px-4 py-3' />

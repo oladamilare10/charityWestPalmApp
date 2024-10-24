@@ -46,9 +46,19 @@ import emirateRedCrescent from '../assets/orgs/emirates-red-crescent.png'
 import barnardo from '../assets/orgs/Barnardo.png'
 import barnfond from '../assets/orgs/cropped-barnfonden_symbol_rgb-2.png'
 import unicef from '../assets/orgs/unicef_twitter1.png'
+import compassion from '../assets/orgs/compassion.png'
 
 export const orgs = {
     "organizations": [
+      {
+        "continent": "Global",
+        "country": "Global",
+        "link": "compassion-aid-child-of-hope",
+        "name": "Compassion Aid Child of Hope",
+        "goal": "provide vital healthcare, education, and a chance at a better future for children.",
+        "purpose": "Compassion Aid Child of Hope works to address pressing issues providing vital necessities such as healthcare, education, and a chance at a better future for children who have survived unimaginable hardships.",
+        "image_url": compassion
+      },
       {
         "continent": "Europe",
         "country": "United Kingdom",
