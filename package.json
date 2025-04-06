@@ -15,6 +15,7 @@
   "dependencies": {
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",
+    "@paypal/react-paypal-js": "^8.8.2",
     "charity-west-palm": "file:",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
