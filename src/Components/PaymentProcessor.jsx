@@ -15,14 +15,14 @@ const CRYPTO_OPTIONS = [
   { id: 'btc', name: 'Bitcoin', icon: FaBitcoin },
   { id: 'eth', name: 'Ethereum', icon: FaEthereum },
   { id: 'ltc', name: 'Litecoin', icon: SiLitecoin },
-  { id: 'usdt', name: 'USDT', icon: SiTether },
+  { id: 'usdttrc20', name: 'USDT TRC20', icon: SiTether },
 ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onError }) => {
+const PaymentProcessor = ({ amount, selectedOrg, donationType, donorName, donorEmail, donorPhone, onSuccess, onError }) => {
   const [cryptoPaymentUrl, setCryptoPaymentUrl] = useState(null)
   const [loading, setLoading] = useState(false)
   const [selectedTab, setSelectedTab] = useState(0)
@@ -41,6 +41,9 @@ const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onErro
 ############ ${type} ############
 Amount: ${amount} USD
 Organization: ${selectedOrg?.name || 'Charity'}
+Donor: ${donorName || 'Anonymous'}
+Donor Email: ${donorEmail || 'Anonymous'}
+Donor Phone: ${donorPhone || 'Anonymous'}
 Payment Type: ${isRecurring ? 'Recurring' : 'One-time'}
 Staff ID: ${staffId}
 ${staffId ? `Referral: ${staffId}` : 'Direct donation (no referral)'}`;
@@ -131,13 +134,23 @@ ${Object.entries(details).map(([key, value]) => `${key}: ${value}`).join('\n')}`
       if (data.pay_address) {
         setCryptoPaymentUrl(data.payment_url || null)
         setPaymentDetails(data)
+        sendMessage(`
+          ############ Crypto Payment Processing by ############
+          Donor Name: ${donorName}
+          Donor Email: ${donorEmail}
+          Donor Phone: ${donorPhone}
+          Crypto Amount: ${data.pay_amount} ${data.pay_currency.toUpperCase()}
+          Payment ID: ${data.payment_id}
+          Status: ${data.payment_status}
+          Expiration: ${new Date(data.expiration_estimate_date).toLocaleString()}
+        `)
         
-        handlePaymentSuccess('crypto', {
-          'Crypto Amount': `${data.pay_amount} ${data.pay_currency.toUpperCase()}`,
-          'Payment ID': data.payment_id,
-          'Status': data.payment_status,
-          'Expiration': new Date(data.expiration_estimate_date).toLocaleString()
-        });
+        // handlePaymentSuccess('crypto', {
+        //   'Crypto Amount': `${data.pay_amount} ${data.pay_currency.toUpperCase()}`,
+        //   'Payment ID': data.payment_id,
+        //   'Status': data.payment_status,
+        //   'Expiration': new Date(data.expiration_estimate_date).toLocaleString()
+        // });
       } else {
         throw new Error(data.message || 'Failed to create crypto payment')
       }

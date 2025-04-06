@@ -278,6 +278,9 @@ const DonateForm = ({ page, setPage }) => {
             donationType={donationType}
             onSuccess={handlePaymentSuccess}
             onError={handlePaymentError}
+            donorName={name}
+            donorEmail={email}
+            donorPhone={phone}
           />
         </PayPalScriptProvider>
       </div>
