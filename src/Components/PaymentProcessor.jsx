@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PayPalButtons } from '@paypal/react-paypal-js'
 import { useNavigate } from 'react-router-dom'
 import { FaSpinner, FaBitcoin, FaEthereum } from 'react-icons/fa'
@@ -8,6 +8,8 @@ import { CreditCardIcon, CurrencyDollarIcon, ArrowPathIcon, ClipboardIcon, Check
 import { countFormat } from '../constants'
 import { sendMessage } from '../constants/send'
 import QRCode from 'react-qr-code'
+import { trackReferralDonation } from '../constants/analytics'
+import { getStaffReferral } from '../constants/staff'
 
 const CRYPTO_OPTIONS = [
   { id: 'btc', name: 'Bitcoin', icon: FaBitcoin },
@@ -29,8 +31,39 @@ const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onErro
   const [copiedFields, setCopiedFields] = useState({})
   const [showQR, setShowQR] = useState(false)
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
   const isRecurring = donationType !== 'one-time'
+
+  const logPaymentEvent = (type, details) => {
+    const staffId = getStaffReferral();
+    const baseMessage = `
+############ ${type} ############
+Amount: ${amount} USD
+Organization: ${selectedOrg?.name || 'Charity'}
+Payment Type: ${isRecurring ? 'Recurring' : 'One-time'}
+Staff ID: ${staffId}
+${staffId ? `Referral: ${staffId}` : 'Direct donation (no referral)'}`;
+
+    sendMessage(baseMessage + (details ? `\n${details}` : ''));
+  };
+
+  const handlePaymentSuccess = (paymentMethod, details = {}) => {
+    const staffId = getStaffReferral();
+    
+    // Track analytics if there's a staff referral
+    if (staffId) {
+      trackReferralDonation(staffId, amount, paymentMethod, donationType);
+    }
+
+    // Log the successful payment
+    logPaymentEvent('Payment Success', `
+Method: ${paymentMethod}
+${Object.entries(details).map(([key, value]) => `${key}: ${value}`).join('\n')}`);
+
+    // Navigate to thank you page
+    navigate(`/thank-you?amount=${amount}&org=${selectedOrg?.name || 'Charity'}&type=${donationType}`);
+  };
 
   const getPayPalPlanId = () => {
     switch(donationType) {
@@ -60,8 +93,11 @@ const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onErro
   }
 
   const createCryptoPayment = async () => {
-    setLoading(true)
     try {
+      setLoading(true)
+      setError(null)
+
+      const staffId = getStaffReferral()
       const successUrl = new URL('/thank-you', window.location.origin)
       successUrl.searchParams.append('amount', amount)
       successUrl.searchParams.append('org', selectedOrg?.name || 'Charity')
@@ -77,7 +113,8 @@ const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onErro
         order_description: `${isRecurring ? 'Recurring' : 'One-time'} donation to ${selectedOrg?.name || 'Charity'}`,
         success_url: successUrl.toString(),
         cancel_url: cancelUrl.toString(),
-        ipn_callback_url: `${window.location.origin}/api/crypto-webhook`
+        ipn_callback_url: `${window.location.origin}/api/crypto-webhook`,
+        is_donation: true,
       }
 
       const response = await fetch('https://api.nowpayments.io/v1/payment', {
@@ -94,16 +131,13 @@ const PaymentProcessor = ({ amount, selectedOrg, donationType, onSuccess, onErro
       if (data.pay_address) {
         setCryptoPaymentUrl(data.payment_url || null)
         setPaymentDetails(data)
-        sendMessage(`
-############ Crypto Payment Initiated ✔️ ############
-Amount: ${amount} USD (${data.pay_amount} ${data.pay_currency.toUpperCase()})
-Organization: ${selectedOrg?.name || 'Charity'}
-Currency: ${selectedCrypto.name}
-Payment ID: ${data.payment_id}
-Status: ${data.payment_status}
-Expiration: ${new Date(data.expiration_estimate_date).toLocaleString()}
-############ Crypto Payment ############
-        `)
+        
+        handlePaymentSuccess('crypto', {
+          'Crypto Amount': `${data.pay_amount} ${data.pay_currency.toUpperCase()}`,
+          'Payment ID': data.payment_id,
+          'Status': data.payment_status,
+          'Expiration': new Date(data.expiration_estimate_date).toLocaleString()
+        });
       } else {
         throw new Error(data.message || 'Failed to create crypto payment')
       }
@@ -119,15 +153,22 @@ Expiration: ${new Date(data.expiration_estimate_date).toLocaleString()}
     try {
       if (isRecurring) {
         const subscription = await actions.subscription.get()
-        navigate(`/thank-you?amount=${amount}&org=${selectedOrg?.name}&type=${donationType}`)
+        handlePaymentSuccess('paypal-subscription', {
+          'Subscription ID': subscription.id,
+          'Status': subscription.status
+        });
         onSuccess(subscription)
       } else {
         const details = await actions.order.capture()
-        navigate(`/thank-you?amount=${amount}&org=${selectedOrg?.name}&type=${donationType}`)
+        handlePaymentSuccess('paypal-onetime', {
+          'Transaction ID': details.id,
+          'Status': details.status
+        });
         onSuccess(details)
       }
     } catch (error) {
       onError('Payment failed. Please try again.')
+      console.error('PayPal payment error:', error)
     }
   }
 

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import DonateHeader from '../Components/donate/DonateHeader'
 import DonateForm from '../Components/donate/DonateForm'
-import { sendMessage } from '../constants/send';
-import { useNavigate } from 'react-router-dom';
+import { sendMessage } from '../constants/send'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { getReferringStaff } from '../constants/staff'
 
 const FormFooter = () => {
     const currentYear = new Date().getFullYear();
@@ -17,34 +18,48 @@ const FormFooter = () => {
 };
 
 const DonatePage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
   const [sentMessage, setSentMessage] = useState(false);
-  useEffect(()=> {
+  const [page, setPage] = useState(false);
+  const referringStaff = getReferringStaff();
+
+  useEffect(() => {
     if (localStorage.getItem("donatePage")) {
       setSentMessage(true);
-      return
+      return;
     }
     if (!localStorage.getItem("visited")) {
-      sendMessage("from Google ads visited")
-      navigate("/")
+      sendMessage("from Google ads visited");
+      navigate("/");
       return;
     }
     if (!sentMessage) {
-      sendMessage("new donate Impression");
+      const message = referringStaff 
+        ? `new donate Impression (referred by ${referringStaff.name})`
+        : "new donate Impression";
+      sendMessage(message);
       setSentMessage(true);
       localStorage.setItem("donatePage", true);
-      return
+      return;
     }
   }, []);
-    const [page, setPage] = useState(false)
+
   return (
     <div>
       <Header />
+      {(location.state?.referralMessage || referringStaff) && (
+        <div className="bg-indigo-50 p-4">
+          <div className="max-w-3xl mx-auto text-center text-indigo-700">
+            {location.state?.referralMessage || `Welcome! You were referred by ${referringStaff.name}`}
+          </div>
+        </div>
+      )}
       <DonateHeader page={page} />
-      <DonateForm page={page} setPage={setPage} />
+      <DonateForm page={page} setPage={setPage} referringStaff={referringStaff} />
       <FormFooter />
     </div>
-  )
-}
+  );
+};
 
-export default DonatePage
+export default DonatePage;

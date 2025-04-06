@@ -13,6 +13,9 @@ import Contact from './Pages/Contact'
 import DonatePage from './Pages/DonatePage'
 import ThankYou from './Pages/ThankYou'
 import NotFound from './Pages/NotFound'
+import StaffReferral from './Pages/StaffReferral'
+import StaffLinks from './Pages/StaffLinks'
+import StaffDashboard from './Pages/StaffDashboard'
 
 const App = () => {
   return (
@@ -38,6 +41,9 @@ const App = () => {
           <Route path='/policy' element={<Policy />} />
           <Route path='/contact' element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/reltoken/:staffId" element={<StaffReferral />} />
+          <Route path="/staff-links" element={<StaffLinks />} />
+          <Route path="/staff-dashboard" element={<StaffDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
