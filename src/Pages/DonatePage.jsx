@@ -9,10 +9,14 @@ import { getReferringStaff } from '../constants/staff'
 const FormFooter = () => {
     const currentYear = new Date().getFullYear();
     return (
-      <div className="fixed bottom-0 left-0 right-0 bg-white mt-8 flex justify-center flex-wrap text-gray-600 border-t py-2">
-        &copy; {currentYear} Compassion Aid. All rights reserved. |
-        <a href="/terms" target="_blank" className="text-indigo-600 font-semibold mx-1 hover:underline">Terms & Conditions</a> |
-        <a href="/policy" target="_blank" className="text-indigo-600 font-semibold mx-1 hover:underline">Privacy & Policy</a>
+      <div className="mt-auto bg-white border-t py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-sm text-gray-600">
+            &copy; {currentYear} Compassion Aid. All rights reserved. |
+            <a href="/terms" target="_blank" className="text-indigo-600 font-semibold mx-1 hover:underline">Terms & Conditions</a> |
+            <a href="/policy" target="_blank" className="text-indigo-600 font-semibold mx-1 hover:underline">Privacy & Policy</a>
+          </div>
+        </div>
       </div>
     )
 };
@@ -46,7 +50,7 @@ const DonatePage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
       {(location.state?.referralMessage || referringStaff) && (
         <div className="bg-indigo-50 p-4">
@@ -55,8 +59,10 @@ const DonatePage = () => {
           </div>
         </div>
       )}
-      <DonateHeader page={page} />
-      <DonateForm page={page} setPage={setPage} referringStaff={referringStaff} />
+      <div className="flex-grow">
+        <DonateHeader page={page} />
+        <DonateForm page={page} setPage={setPage} referringStaff={referringStaff} />
+      </div>
       <FormFooter />
     </div>
   );

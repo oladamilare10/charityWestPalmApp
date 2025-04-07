@@ -39,47 +39,47 @@ const DonationTypeSelector = ({ selectedType, onSelect }) => {
 }
 
 const Radio = ({ item, amount, setAmount, recurring, recurringText }) => {
-  const numAmount = Number(amount)
-  return (
-    <div className='flex items-center gap-2'>
-      <input
-        type='radio'
-        name='amount'
-        className='hidden'
-        id={`amount-${item}`}
-        value={item}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <label
+    const numAmount = Number(amount)
+    return (
+        <div className='flex items-center gap-2'>
+            <input
+              type='radio'
+              name='amount'
+              className='hidden'
+              id={`amount-${item}`}
+              value={item}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <label
         className={`${numAmount === item ? 'bg-indigo-600 text-white' : 'bg-gray-100 hover:bg-gray-200'} 
           border px-5 py-4 rounded-md cursor-pointer transition-colors font-semibold`}
         htmlFor={`amount-${item}`}
       >
         ${countFormat.format(item)} {recurring && recurringText}
       </label>
-    </div>
-  )
+          </div>
+    )
 }
 
 const OrgSelect = ({ orgs, selectedOrg, setSelectedOrg, setShowOptions }) => {
-  return (
+    return (
     <div className="absolute w-full bg-white border rounded-lg shadow-lg max-h-96 overflow-y-auto z-10">
       {orgs.organizations.map(org => (
         <div 
           key={org.link} 
           onClick={() => {
-            setSelectedOrg(org)
-            setShowOptions(false)
-          }}
+                            setSelectedOrg(org)
+                            setShowOptions(false)
+                        }} 
           className='flex cursor-pointer px-4 hover:bg-gray-50 justify-between items-center border-b last:border-b-0'
         >
-          <div className='flex gap-4 py-3'>
+                            <div className='flex gap-4 py-3'>
             <img src={org.image_url} alt={org.name} className='w-12 h-12 rounded-full object-cover' />
             <div className='text-gray-600 font-semibold'>
               {org.name}
-              <div className='text-sm text-gray-400'>{org.country}</div>
-            </div>
-          </div>
+                                    <div className='text-sm text-gray-400'>{org.country}</div>
+                                </div>
+                            </div>
           {selectedOrg === org && (
             <div className='h-full'>
               <IoIosCheckmark className='text-2xl text-indigo-600' />
@@ -87,41 +87,41 @@ const OrgSelect = ({ orgs, selectedOrg, setSelectedOrg, setShowOptions }) => {
           )}
         </div>
       ))}
-    </div>
-  )
+        </div>
+    )
 }
 
 const DonateForm = ({ page, setPage }) => {
-  const [searchParams] = useSearchParams()
-  const paramsValue = searchParams.get('donate-to')
+    const [searchParams] = useSearchParams()
+    const paramsValue = searchParams.get('donate-to')
   const prefilledAmount = searchParams.get('amount')
   const navigate = useNavigate()
 
-  const filterOrg = () => {
-    if (paramsValue) {
+    const filterOrg = () => {
+        if (paramsValue) {
       return orgs.organizations.find(item => item.link === paramsValue)
     }
     return orgs.organizations[0]
   }
 
   const [amount, setAmount] = useState(prefilledAmount || '')
-  const [addTaxable, setAddTaxable] = useState(false)
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [organize, setOrganize] = useState(false)
-  const [anonymous, setAnonymous] = useState(false)
-  const [organization, setOrganization] = useState('')
-  const taxed = 0.025 * Number(amount)
-  const tax = countFormat.format(taxed)
-  const [SelectedOrg, setSelectedOrg] = useState(filterOrg())
-  const [showOptions, setShowOptions] = useState(false)
-  const [onbehalf, setOnbehalf] = useState(false)
-  const [onbehalfName, setOnbehalfName] = useState('')
-  const [message, setMessage] = useState('')
-  const [msg, setMsg] = useState(null)
-  const [err, setErr] = useState(null)
-  const [loadings, setLoadings] = useState(false)
+    const [addTaxable, setAddTaxable] = useState(false)
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [organize, setOrganize] = useState(false)
+    const [anonymous, setAnonymous] = useState(false)
+    const [organization, setOrganization] = useState('')
+    const taxed = 0.025 * Number(amount)
+    const tax = countFormat.format(taxed)
+    const [SelectedOrg, setSelectedOrg] = useState(filterOrg())
+    const [showOptions, setShowOptions] = useState(false)
+    const [onbehalf, setOnbehalf] = useState(false)
+    const [onbehalfName, setOnbehalfName] = useState('')
+    const [message, setMessage] = useState('')
+    const [msg, setMsg] = useState(null)
+    const [err, setErr] = useState(null)
+    const [loadings, setLoadings] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [donationType, setDonationType] = useState('one-time')
 
@@ -229,26 +229,26 @@ const DonateForm = ({ page, setPage }) => {
   }
 
   // Update text message to include donation frequency
-  const textMessage = `
-  ############ Donation Form ✔️✔️✔️✔️✔️ ############
-  email: ${email}
-  name: ${name}
-  donateTo: ${SelectedOrg.name}
-  link: https://compassionaid.love/donate/${SelectedOrg.link}
-  country: ${SelectedOrg.country}
+    const textMessage = `
+    ############ Donation Form ✔️✔️✔️✔️✔️ ############
+    email: ${email}
+    name: ${name}
+    donateTo: ${SelectedOrg.name}
+    link: https://compassionaid.love/donate/${SelectedOrg.link}
+    country: ${SelectedOrg.country}
   amount: $${countFormat.format(amount)} ${getRecurringText()}
   donation_type: ${donationType}
-  phone: ${phone}
-  onbehalf: ${onbehalf? 'Yes' : 'No'}
-  onbehalfName: ${onbehalfName}
-  tax: ${tax}
-  organization: ${organization}
-  anonymous: ${anonymous? 'Yes' : 'No'}
+    phone: ${phone}
+    onbehalf: ${onbehalf? 'Yes' : 'No'}
+    onbehalfName: ${onbehalfName}
+    tax: ${tax}
+    organization: ${organization}
+    anonymous: ${anonymous? 'Yes' : 'No'}
   totalAmount: $${countFormat.format(totalAmount)} ${getRecurringText()}
-  message: ${message} \n\n
-  locationData: ${location}
-  ############ Donation Form ############
-  `;
+    message: ${message} \n\n
+    locationData: ${location}
+    ############ Donation Form ############
+    `;
 
   if (showPayment) {
     return (
@@ -284,11 +284,11 @@ const DonateForm = ({ page, setPage }) => {
           />
         </PayPalScriptProvider>
       </div>
-    )
-  }
+        )
+    }
 
-  if (page) {
-    return (
+    if (page) {
+        return (
       <div className='mx-auto max-w-3xl px-8'>
         <h2 className='text-2xl font-semibold text-indigo-600 flex max-w-7xl items-center justify-between p-6 lg:px-8'>
           Personal Details
@@ -392,8 +392,8 @@ const DonateForm = ({ page, setPage }) => {
           </button>
         </div>
       </div>
-    )
-  }
+        )
+    }
 
   return (
     <div className='mx-auto flex max-w-3xl flex-col justify-between p-6 lg:px-8'>
@@ -447,7 +447,7 @@ const DonateForm = ({ page, setPage }) => {
             onClick={() => setShowOptions(!showOptions)}
             className='flex px-4 cursor-pointer justify-between border rounded-lg hover:border-indigo-500 transition-colors items-center'
           >
-            <div className='flex gap-4 py-3'>
+        <div className='flex gap-4 py-3'>
               <img src={SelectedOrg.image_url} alt={SelectedOrg.name} className='w-12 h-12 rounded-full object-cover' />
               <div className='text-gray-900 font-semibold'>
                 {SelectedOrg.name}
@@ -455,7 +455,7 @@ const DonateForm = ({ page, setPage }) => {
               </div>
             </div>
             <FaSortDown className={`text-2xl text-gray-600 transition-transform ${showOptions ? 'rotate-180' : ''}`} />
-          </div>
+        </div>
           
           {showOptions && (
             <OrgSelect
