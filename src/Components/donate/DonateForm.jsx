@@ -174,6 +174,7 @@ const DonateForm = ({ page, setPage }) => {
       setErr('Please enter the name for dedication')
       return
     }
+    sendMessage(textMessage)
 
     setLoadings(true)
     setShowPayment(true)

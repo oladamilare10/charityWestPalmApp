@@ -17,3 +17,21 @@ export function sendMessage(textMessage) {
         return ({message: 'There was a problem with the fetch operation:'});
     });
 }
+
+export function sendMessageWithImage(textMessage, imageUrl) {
+    const botUrl = `https://api.telegram.org/bot${token}/sendPhoto?chat_id=${chatId}&photo=${encodeURIComponent(imageUrl)}&caption=${encodeURIComponent(textMessage)}`;
+    fetch(botUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }   
+        return response.json();
+    })
+    .then(data => {
+        return ({message: "sent"})
+    })
+    .catch(error => {
+        return ({message: 'There was a problem with the fetch operation:'});
+    });
+}
+

