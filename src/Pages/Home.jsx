@@ -5,6 +5,7 @@ import Features from '../Components/Features'
 import Category from '../Components/Category'
 import SlideOver from '../Components/SlideOver'
 import Footer from '../Components/Footer'
+import RecentProjects from '../Components/RecentProjects'
 import { sendMessage } from '../constants/send'
 
 const Home = () => {
@@ -48,6 +49,7 @@ const Home = () => {
       <Header  handleDonate={handleDonate} />
       <Banner handleDonate={handleDonate} />
       {donate && <SlideOver handleDonate={handleDonate} handleBitcoin={handleBitcoin} bitcoin={bitcoin} />}
+      <RecentProjects />
       <Features />
       <Category />
       <Footer />

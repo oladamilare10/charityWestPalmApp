@@ -16,6 +16,7 @@ import categoryOne from './banners/Girl-in-Beirut-destruction.jpg'
 import categoryTwo from './banners/syria-debris.avif'
 import purposeOne from './banners/AdobeStock_180098018-1024x683.jpeg'
 import bannerEight from './banners/pexels-kampus-8171167.jpg'
+import bannerNine from './banners/african-clean-water-project.jpg'
 
 export const banners = {
     bannerOne,
@@ -26,6 +27,7 @@ export const banners = {
     bannerSix,
     bannerSeven,
     bannerEight,
+    bannerNine,
     hero: {
         heroOne,
         heroTwo,
