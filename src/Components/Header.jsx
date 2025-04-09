@@ -46,8 +46,8 @@ const Header = (props) => {
             <Link to={"/"} className="text-sm font-semibold leading-6 text-gray-900">
               Home
             </Link>
-            <Link to={"/foundations"} className="text-sm font-semibold leading-6 text-gray-900">
-              Foundations
+            <Link to={"/projects"} className="text-sm font-semibold leading-6 text-gray-900">
+              Projects
             </Link>
             <Link to={"/Purpose"} className="text-sm font-semibold leading-6 text-gray-900">
               Purpose
@@ -105,10 +105,10 @@ const Header = (props) => {
                     Home
                   </Link>
                   <Link
-                    to={"/foundations"}
+                    to={"/projects"}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Foundations
+                    Projects
                   </Link>
                   <Link
                     to={"/Purpose"}

@@ -1,95 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { banners } from '../assets';
 import { ChevronLeftIcon, ChevronRightIcon, HeartIcon, UserGroupIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
-
-const projects = [
-  {
-    id: 1,
-    title: "Gaza Emergency Relief",
-    description: "Providing essential medical supplies and humanitarian aid to families affected by the crisis.",
-    image: banners.hero.heroSeven,
-    progress: 85,
-    impact: "12,000+ families helped",
-    raised: 850000,
-    goal: 1000000,
-    category: "Emergency Relief",
-    stats: {
-      donors: 2450,
-      countries: 35,
-      shares: 1200
-    }
-  },
-  {
-    id: 2,
-    title: "Children's Education Fund",
-    description: "Supporting education initiatives for underprivileged children worldwide.",
-    image: banners.bannerSeven,
-    progress: 65,
-    impact: "5,000+ children educated",
-    raised: 325000,
-    goal: 500000,
-    category: "Education",
-    stats: {
-      donors: 1850,
-      countries: 28,
-      shares: 950
-    }
-  },
-  {
-    id: 3,
-    title: "Clean Water Initiative",
-    description: "Building sustainable water systems in communities lacking access to clean water.",
-    image: banners.bannerNine,
-    progress: 45,
-    impact: "20+ communities served",
-    raised: 180000,
-    goal: 400000,
-    category: "Infrastructure",
-    stats: {
-      donors: 1200,
-      countries: 15,
-      shares: 680
-    }
-  },
-  {
-    id: 4,
-    title: "Medical Aid Program",
-    description: "Providing medical care and supplies to underserved communities.",
-    image: banners.bannerFour,
-    progress: 75,
-    impact: "8,000+ patients treated",
-    raised: 375000,
-    goal: 500000,
-    category: "Healthcare",
-    stats: {
-      donors: 2100,
-      countries: 22,
-      shares: 890
-    }
-  },
-  {
-    id: 5,
-    title: "Food Security Project",
-    description: "Ensuring sustainable food supply for vulnerable populations.",
-    image: banners.hero.heroFour,
-    progress: 55,
-    impact: "15,000+ meals provided",
-    raised: 275000,
-    goal: 500000,
-    category: "Food Security",
-    stats: {
-      donors: 1650,
-      countries: 18,
-      shares: 720
-    }
-  }
-];
+import { getRecentProjects } from '../constants/projects';
 
 const RecentProjects = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const projects = getRecentProjects();
 
   useEffect(() => {
     if (!isPaused) {
@@ -98,7 +16,7 @@ const RecentProjects = () => {
       }, 8000);
       return () => clearInterval(timer);
     }
-  }, [isPaused]);
+  }, [isPaused, projects.length]);
 
   const handlePrevious = () => {
     setActiveIndex((current) => (current - 1 + projects.length) % projects.length);
@@ -239,7 +157,7 @@ const RecentProjects = () => {
                           <div className="text-sm text-gray-500">{project.impact}</div>
                         </div>
                         <Link
-                          to="/donate"
+                          to={`/donate?project=${project.id}`}
                           className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95"
                         >
                           Donate Now

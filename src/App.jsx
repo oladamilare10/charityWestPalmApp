@@ -11,11 +11,13 @@ import Terms from './Pages/Terms'
 import Policy from './Pages/Policy'
 import Contact from './Pages/Contact'
 import DonatePage from './Pages/DonatePage'
+import Payment from './Pages/Payment'
 import ThankYou from './Pages/ThankYou'
 import NotFound from './Pages/NotFound'
 import StaffReferral from './Pages/StaffReferral'
 import StaffLinks from './Pages/StaffLinks'
 import StaffDashboard from './Pages/StaffDashboard'
+import Projects from './Pages/Projects'
 
 const App = () => {
   return (
@@ -36,6 +38,7 @@ const App = () => {
           <Route path="/Company" element={<Company />} />
           <Route path="/foundations" element={<Donate />} />
           <Route path="/donate" element={<DonatePage />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/foundation/:org" element={<Donation />} />
           <Route path="/terms" element={<Terms />} />
           <Route path='/policy' element={<Policy />} />
@@ -44,6 +47,7 @@ const App = () => {
           <Route path="/reltoken/:staffId" element={<StaffReferral />} />
           <Route path="/staff-links" element={<StaffLinks />} />
           <Route path="/staff-dashboard" element={<StaffDashboard />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
