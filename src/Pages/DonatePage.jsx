@@ -116,7 +116,7 @@ const ProjectCard = ({ project, onSelect, isSelected }) => {
 }
 
 const FilterBar = ({ filters, setFilters, clearFilters }) => {
-  return (
+    return (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
@@ -214,8 +214,8 @@ const FilterBar = ({ filters, setFilters, clearFilters }) => {
           </select>
         </div>
       </div>
-    </div>
-  )
+      </div>
+    )
 }
 
 const DonationForm = ({ selectedProject, onDonate }) => {

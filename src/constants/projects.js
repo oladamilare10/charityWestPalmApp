@@ -19,7 +19,7 @@ export const projects = [
     stats: {
       donors: 49,
       countries: 3,
-      shares: 1200
+      shares: 10
     }
   },
   {

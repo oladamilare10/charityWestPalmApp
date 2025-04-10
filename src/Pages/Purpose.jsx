@@ -85,7 +85,7 @@ const Purpose = () => {
                     Our Mission
                   </span>
                 </div>
-              </div>
+        </div>
               <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Making a difference through compassion
               </h1>
@@ -107,8 +107,8 @@ const Purpose = () => {
                 />
               </div>
             </motion.div>
-          </div>
-        </div>
+              </div>
+            </div>
 
         {/* Stats Section */}
         <div className="relative -mt-12 sm:-mt-16 lg:-mt-24">

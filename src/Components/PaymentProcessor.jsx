@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { PayPalButtons } from '@paypal/react-paypal-js'
 import { useNavigate } from 'react-router-dom'
 import { FaSpinner, FaBitcoin, FaEthereum, FaGift, FaAmazon, FaApple, FaGooglePlay, FaStoreAlt } from 'react-icons/fa'
-import { SiLitecoin, SiTether, SiVisa, SiMastercard } from 'react-icons/si'
+import { SiLitecoin, SiTether, SiVisa, SiMastercard, SiCashapp } from 'react-icons/si'
 import { Tab } from '@headlessui/react'
 import { CreditCardIcon, CurrencyDollarIcon, ArrowPathIcon, ClipboardIcon, CheckIcon, QrCodeIcon, ExclamationCircleIcon, PhotoIcon } from '@heroicons/react/24/outline'
 import { countFormat } from '../constants'
@@ -856,6 +856,22 @@ Please ensure you keep the original images for your records.
             }
           >
             <div className="flex items-center justify-center gap-2">
+              <SiCashapp className="h-5 w-5" />
+              Cash App
+            </div>
+          </Tab>
+          <Tab
+            className={({ selected }) =>
+              classNames(
+                'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                selected
+                  ? 'bg-white shadow text-indigo-700'
+                  : 'text-indigo-600 hover:bg-white/[0.12] hover:text-indigo-700'
+              )
+            }
+          >
+            <div className="flex items-center justify-center gap-2">
               <CurrencyDollarIcon className="h-5 w-5" />
               Crypto
             </div>
@@ -895,6 +911,58 @@ Please ensure you keep the original images for your records.
         </Tab.List>
 
         <Tab.Panels className="mt-4">
+          {/* Cash App Panel */}
+          <Tab.Panel className="rounded-xl bg-white p-3">
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-gray-900">Cash App Payment</h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Donate using Cash App
+                </p>
+              </div>
+
+              <div className="bg-green-50 border border-green-100 rounded-lg p-6">
+                <div className="flex flex-col items-center space-y-4">
+                  <SiCashapp className="h-16 w-16 text-green-600" />
+                  <div className="text-center">
+                    <p className="text-lg font-semibold text-gray-900">Cash App Tag:</p>
+                    <div className="flex items-center justify-center gap-2 mt-2">
+                      <p className="text-2xl font-bold text-green-600">$FrankSzkudlarek</p>
+                      <button
+                        onClick={() => copyToClipboard('$FrankSzkudlarek', 'cashapp')}
+                        className="p-2 text-green-600 hover:text-green-700 transition-colors"
+                        title="Copy Cash App tag"
+                      >
+                        {copiedFields['cashapp'] ? (
+                          <CheckIcon className="h-5 w-5" />
+                        ) : (
+                          <ClipboardIcon className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                      1. Open Cash App on your phone<br />
+                      2. Enter the amount: ${countFormat.format(amount)}<br />
+                      3. Enter the $Cashtag: $FrankSzkudlarek<br />
+                      4. Add a note with your name and "Donation"<br />
+                      5. Tap "Pay"
+                    </p>
+                  </div>
+                  <a
+                    href="https://cash.app/$FrankSzkudlarek"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors"
+                  >
+                    Open Cash App
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Tab.Panel>
+
           {/* Crypto Panel */}
           <Tab.Panel className="rounded-xl bg-white p-3">
             <div className="space-y-4">

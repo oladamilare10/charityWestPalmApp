@@ -9,102 +9,132 @@ import {
   MapPinIcon,
   ShareIcon,
   ChartBarIcon,
-  XMarkIcon
+  XMarkIcon,
+  FunnelIcon,
+  ArrowsUpDownIcon
 } from '@heroicons/react/24/outline';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { projects, categories, filterProjects } from '../constants/projects';
 import { countFormat } from '../constants';
+import Timer from '../Components/Timer';
 
 const ProjectCard = ({ project }) => {
   const startDate = new Date(project.startDate).toLocaleDateString('en-US', {
     month: 'short',
-    year: 'numeric'
-  });
-  const endDate = new Date(project.endDate).toLocaleDateString('en-US', {
-    month: 'short',
+    day: 'numeric',
     year: 'numeric'
   });
 
+  const endDate = new Date(project.endDate);
+  const isEnding = endDate - new Date() < 1000 * 60 * 60 * 24 * 7; // Less than 7 days left
+
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="group relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="relative h-48 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-        <img 
-          src={project.image} 
-          alt={project.title} 
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+      <div className="relative h-48 group">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-          <h3 className="text-xl font-bold text-white line-clamp-2">{project.title}</h3>
-          <div className="flex items-center mt-2 text-white/80 text-sm">
-            <MapPinIcon className="h-4 w-4 mr-1" />
-            {project.location}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+          <span className={`px-3 py-1 text-xs font-semibold rounded-full
+            ${project.status === 'active' ? 'bg-green-600 text-white' :
+              project.status === 'completed' ? 'bg-gray-600 text-white' :
+              'bg-amber-500 text-white'}`}
+          >
+            {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+          </span>
+          <span className="px-3 py-1 text-xs font-semibold bg-indigo-600 text-white rounded-full">
+            {project.category}
+          </span>
+        </div>
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex gap-2">
+              <span className="px-2 py-1 text-xs font-medium bg-white/90 text-gray-800 rounded-full flex items-center">
+                <UserGroupIcon className="h-3 w-3 mr-1" />
+                {countFormat.format(project.stats.donors)}
+              </span>
+              <span className="px-2 py-1 text-xs font-medium bg-white/90 text-gray-800 rounded-full flex items-center">
+                <GlobeAltIcon className="h-3 w-3 mr-1" />
+                {project.stats.countries}
+              </span>
+              <span className="px-2 py-1 text-xs font-medium bg-white/90 text-gray-800 rounded-full flex items-center">
+                <ShareIcon className="h-3 w-3 mr-1" />
+                {project.stats.shares}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-white">
+            <MapPinIcon className="h-4 w-4" />
+            <span className="text-sm">{project.location}</span>
           </div>
         </div>
       </div>
 
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-            project.status === 'completed' 
-              ? 'bg-green-100 text-green-800'
-              : 'bg-blue-100 text-blue-800'
-          }`}>
-            {project.status === 'completed' ? 'Completed' : 'Active'}
-          </span>
-          <div className="flex items-center text-sm text-gray-500">
-            <CalendarIcon className="h-4 w-4 mr-1" />
-            {startDate} - {endDate}
-          </div>
-        </div>
-
-        <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 hover:text-indigo-600 transition-colors">
+          {project.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
           {project.description}
         </p>
 
-        <div className="space-y-3">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">Progress</span>
-            <span className="font-medium">{project.progress}%</span>
+        <div className="space-y-4">
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="font-medium text-gray-900">
+                ${countFormat.format(project.raised)} raised
+              </span>
+              <span className="text-gray-500">
+                of ${countFormat.format(project.goal)} goal
+              </span>
+            </div>
+            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <motion.div
+                className={`h-full rounded-full ${
+                  project.progress >= 90 ? 'bg-green-600' :
+                  project.progress >= 75 ? 'bg-indigo-600' :
+                  project.progress >= 50 ? 'bg-amber-500' :
+                  'bg-rose-500'
+                }`}
+                initial={{ width: 0 }}
+                animate={{ width: `${project.progress}%` }}
+                transition={{ duration: 1, delay: 0.2 }}
+              />
+            </div>
+            <div className="mt-1 flex justify-between items-center">
+              <div className="text-xs text-gray-500">
+                {project.progress}% complete
+              </div>
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <CalendarIcon className="h-3 w-3" />
+                {startDate}
+              </div>
+            </div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="h-full rounded-full bg-indigo-600 transition-all duration-500"
-              style={{ width: `${project.progress}%` }}
-            />
-          </div>
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">Raised</span>
-            <span className="font-medium">${countFormat.format(project.raised)}</span>
-          </div>
-        </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="flex justify-between items-center text-sm text-gray-500">
-            <div className="flex space-x-4">
-              <div className="flex items-center">
-                <UserGroupIcon className="h-4 w-4 mr-1" />
-                {countFormat.format(project.stats.donors)}
-              </div>
-              <div className="flex items-center">
-                <GlobeAltIcon className="h-4 w-4 mr-1" />
-                {project.stats.countries}
-              </div>
-              <div className="flex items-center">
-                <ShareIcon className="h-4 w-4 mr-1" />
-                {project.stats.shares || 0}
-              </div>
+          {isEnding && (
+            <div className="bg-amber-50 rounded-lg p-3">
+              <p className="text-amber-800 text-sm font-medium mb-1">Time remaining:</p>
+              <Timer targetDate={endDate} />
+            </div>
+          )}
+
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <div className="text-sm font-medium text-gray-900">Impact</div>
+              <div className="text-sm text-gray-500 line-clamp-1">{project.impact}</div>
             </div>
             <Link
               to={`/donate?project=${project.id}`}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
             >
               Donate Now
             </Link>
@@ -115,162 +145,175 @@ const ProjectCard = ({ project }) => {
   );
 };
 
+const FilterBar = ({ filters, setFilters, clearFilters }) => {
+  const [showFilters, setShowFilters] = useState(false);
+  const sortOptions = [
+    { label: 'Progress', value: 'progress' },
+    { label: 'Amount Raised', value: 'raised' },
+    { label: 'End Date', value: 'endDate' },
+    { label: 'Most Donors', value: 'donors' }
+  ];
+
+  return (
+    <div className="bg-white shadow-md rounded-lg p-4 mb-8">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1">
+          <div className="relative">
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={filters.search}
+              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+          >
+            <FunnelIcon className="h-5 w-5" />
+            Filters
+          </button>
+          <div className="relative">
+            <select
+              value={filters.sortBy}
+              onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+              className="appearance-none pl-4 pr-10 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              {sortOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  Sort by {option.label}
+                </option>
+              ))}
+            </select>
+            <ArrowsUpDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+          </div>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {showFilters && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-4 mt-4 border-t border-gray-200">
+              <div className="flex flex-wrap gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <select
+                    value={filters.category || ''}
+                    onChange={(e) => setFilters({ ...filters, category: e.target.value || null })}
+                    className="text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map(category => (
+                      <option key={category} value={category}>{category}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <select
+                    value={filters.status || ''}
+                    onChange={(e) => setFilters({ ...filters, status: e.target.value || null })}
+                    className="text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center gap-1 px-3 py-1 text-sm font-medium text-gray-600 hover:text-gray-900"
+                >
+                  <XMarkIcon className="h-4 w-4" />
+                  Clear Filters
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const Projects = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('progress');
+  const [filters, setFilters] = useState({
+    category: null,
+    status: null,
+    search: "",
+    sortBy: "progress"
+  });
+
   const [filteredProjects, setFilteredProjects] = useState(projects);
 
-  // Get unique locations from projects
-  const locations = [...new Set(projects.map(project => project.location))].sort();
-
   useEffect(() => {
-    const filtered = filterProjects({
-      category: selectedCategory,
-      status: selectedStatus,
-      search: searchQuery,
-      sortBy,
-      location: selectedLocation
-    });
-    setFilteredProjects(filtered);
-  }, [selectedCategory, selectedStatus, searchQuery, sortBy, selectedLocation]);
+    const results = filterProjects(filters);
+    setFilteredProjects(results);
+  }, [filters]);
 
   const clearFilters = () => {
-    setSelectedCategory(null);
-    setSelectedStatus(null);
-    setSelectedLocation(null);
-    setSearchQuery('');
-    setSortBy('progress');
+    setFilters({
+      category: null,
+      status: null,
+      search: "",
+      sortBy: "progress"
+    });
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Projects</h1>
-            <p className="text-lg text-gray-600">
-              Discover and support our ongoing and completed humanitarian projects around the world
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search projects..."
-                  className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              </div>
-
-              <select
-                value={selectedCategory || ''}
-                onChange={(e) => setSelectedCategory(e.target.value || null)}
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-
-              <select
-                value={selectedLocation || ''}
-                onChange={(e) => setSelectedLocation(e.target.value || null)}
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="">All Locations</option>
-                {locations.map(location => (
-                  <option key={location} value={location}>{location}</option>
-                ))}
-              </select>
-
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="progress">Sort by Progress</option>
-                <option value="raised">Sort by Amount Raised</option>
-                <option value="recent">Sort by Most Recent</option>
-                <option value="donors">Sort by Number of Donors</option>
-              </select>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setSelectedStatus('active')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedStatus === 'active'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Active Projects
-                </button>
-                <button
-                  onClick={() => setSelectedStatus('completed')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedStatus === 'completed'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  Completed Projects
-                </button>
-              </div>
-
-              {(selectedCategory || selectedStatus || selectedLocation || searchQuery || sortBy !== 'progress') && (
-                <button
-                  onClick={clearFilters}
-                  className="flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-                >
-                  <XMarkIcon className="h-4 w-4 mr-1" />
-                  Clear Filters
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="mb-6 text-gray-600">
-            Found {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
-          </div>
-
-          <AnimatePresence>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredProjects.map(project => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          </AnimatePresence>
-
-          {filteredProjects.length === 0 && (
-            <div className="text-center py-12">
-              <ChartBarIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-semibold text-gray-900">No projects found</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Try adjusting your filters or search terms
-              </p>
-              <button
-                onClick={clearFilters}
-                className="mt-4 text-sm text-indigo-600 hover:text-indigo-700"
-              >
-                Clear all filters
-              </button>
-            </div>
-          )}
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-4">
+            Impact Projects
+          </h1>
+          <p className="text-xl text-gray-600">
+            Browse our current projects and make a difference today
+          </p>
         </div>
-      </div>
+
+        <FilterBar
+          filters={filters}
+          setFilters={setFilters}
+          clearFilters={clearFilters}
+        />
+
+        {filteredProjects.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-12"
+          >
+            <ChartBarIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <h3 className="mt-2 text-sm font-semibold text-gray-900">No projects found</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Try adjusting your filters or search terms
+            </p>
+          </motion.div>
+        ) : (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        )}
+      </main>
+
       <Footer />
-    </>
+    </div>
   );
 };
 
