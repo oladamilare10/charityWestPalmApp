@@ -17,11 +17,6 @@ const Header = (props) => {
     setShowQuickDonate(false)
   }
 
-  const handleQuickDonateSubmit = (amount) => {
-    // Redirect to the full donation page with the amount pre-filled
-    window.location.href = `/donate?amount=${amount}`
-  }
-
   return (
     <>
       <header className="bg-white">
@@ -152,7 +147,6 @@ const Header = (props) => {
       {showQuickDonate && (
         <QuickDonate
           onClose={handleQuickDonateClose}
-          onProceed={handleQuickDonateSubmit}
         />
       )}
     </>
