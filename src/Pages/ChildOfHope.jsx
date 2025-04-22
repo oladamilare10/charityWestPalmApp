@@ -291,19 +291,19 @@ const ChildOfHope = () => {
               >
                 <img
                   src={banners.bannerThree}
-                  alt="Gaza Crisis"
+                  alt="Yemen Crisis"
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Gaza Crisis</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Yemen Crisis</h3>
                   <p className="text-gray-600 mb-4">
-                    Thousands of children in Gaza need urgent medical care, food, and safe shelter. Your support can help provide essential supplies and emergency medical treatment.
+                    Thousands of children in Yemen need urgent medical care, food, and safe shelter. Your support can help provide essential supplies and emergency medical treatment.
                   </p>
                   <Link
-                    to="/campaign-payment?campaign=gaza-children"
+                    to="/campaign-payment?campaign=yemen-children"
                     className="text-indigo-600 font-semibold hover:text-indigo-500"
                   >
-                    Help Children in Gaza →
+                    Help Children in Yemen →
                   </Link>
                 </div>
               </motion.div>

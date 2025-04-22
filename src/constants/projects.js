@@ -44,7 +44,7 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Gaza Emergency Relief",
+    title: "Yemen Emergency Relief",
     description: "Providing essential medical supplies and humanitarian aid to families affected by the crisis.",
     image: banners.hero.heroSeven,
     progress: 85,
@@ -55,7 +55,7 @@ export const projects = [
     status: "active",
     startDate: "2024-02-01",
     endDate: "2025-05-01",
-    location: "Gaza Strip",
+    location: "Yemen",
     stats: {
       donors: 2450,
       countries: 35,

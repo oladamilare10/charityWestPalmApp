@@ -92,6 +92,12 @@ const CampaignPayment = () => {
   const [paymentStatus, setPaymentStatus] = useState('waiting');
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [selectedGiftCard, setSelectedGiftCard] = useState(null);
+  
+  // Add donor information state
+  const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [donorPhone, setDonorPhone] = useState('');
+  const [showPaymentMethods, setShowPaymentMethods] = useState(false);
 
   // Add scroll to top effect
   useEffect(() => {
@@ -581,24 +587,6 @@ const CampaignPayment = () => {
         );
 
       case 'cashapp':
-        return (
-          <div className="mt-6 space-y-4">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-2">Send to CashApp:</p>
-              <div className="font-mono bg-white p-3 rounded border">
-                {cashAppTag}
-              </div>
-            </div>
-            <button
-              onClick={handleCashAppSubmit}
-              disabled={loading}
-              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-500 transition-colors"
-            >
-              {loading ? 'Processing...' : 'Confirm CashApp Payment'}
-            </button>
-          </div>
-        );
-      case 'cashapp':
         return renderCashAppPayment();
       case 'giftcard':
         return renderGiftCardForm();
@@ -622,6 +610,33 @@ const CampaignPayment = () => {
         );
       default:
         return null;
+    }
+  };
+
+  // Add validation function
+  const validateDonorInfo = () => {
+    if (!donorName.trim()) {
+      setError('Please enter your name');
+      return false;
+    }
+    if (!donorEmail.trim()) {
+      setError('Please enter your email');
+      return false;
+    }
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(donorEmail)) {
+      setError('Please enter a valid email address');
+      return false;
+    }
+    return true;
+  };
+
+  // Add handler for donor info submission
+  const handleDonorInfoSubmit = () => {
+    if (validateDonorInfo()) {
+      setError('');
+      setShowPaymentMethods(true);
     }
   };
 
@@ -668,46 +683,108 @@ const CampaignPayment = () => {
                 </div>
               </div>
 
-              {/* Payment Method Selection */}
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900">Choose Payment Method</h2>
-                
-                <PaymentOption
-                  icon={ArrowPathIcon}
-                  title="Cryptocurrency"
-                  description="Donate with Bitcoin or other crypto"
-                  selected={paymentMethod === 'crypto'}
-                  onClick={() => setPaymentMethod('crypto')}
-                />
+              {/* Donor Information Form */}
+              {!showPaymentMethods && (
+                <div className="space-y-6">
+                  <h2 className="text-lg font-semibold text-gray-900">Your Information</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={donorName}
+                        onChange={(e) => setDonorName(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={donorEmail}
+                        onChange={(e) => setDonorEmail(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                        Phone Number <span className="text-gray-400">(Optional)</span>
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        value={donorPhone}
+                        onChange={(e) => setDonorPhone(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                    </div>
+                    {error && (
+                      <p className="text-sm text-red-600" role="alert">
+                        {error}
+                      </p>
+                    )}
+                    <button
+                      onClick={handleDonorInfoSubmit}
+                      className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-500 transition-colors"
+                    >
+                      Continue to Payment
+                    </button>
+                  </div>
+                </div>
+              )}
 
-                <PaymentOption
-                  icon={GiftIcon}
-                  title="Gift Card"
-                  description="Redeem a gift card"
-                  selected={paymentMethod === 'giftcard'}
-                  onClick={() => setPaymentMethod('giftcard')}
-                />
+              {/* Payment Methods Section */}
+              {showPaymentMethods && (
+                <>
+                  <div className="space-y-4">
+                    <h2 className="text-lg font-semibold text-gray-900">Choose Payment Method</h2>
+                    
+                    <PaymentOption
+                      icon={ArrowPathIcon}
+                      title="Cryptocurrency"
+                      description="Donate with Bitcoin or other crypto"
+                      selected={paymentMethod === 'crypto'}
+                      onClick={() => setPaymentMethod('crypto')}
+                    />
 
-                <PaymentOption
-                  icon={CurrencyDollarIcon}
-                  title="CashApp"
-                  description="Quick payment with CashApp"
-                  selected={paymentMethod === 'cashapp'}
-                  onClick={() => setPaymentMethod('cashapp')}
-                />
+                    <PaymentOption
+                      icon={CurrencyDollarIcon}
+                      title="CashApp"
+                      description="Quick payment with CashApp"
+                      selected={paymentMethod === 'cashapp'}
+                      onClick={() => setPaymentMethod('cashapp')}
+                    />
 
-                <PaymentOption
-                  icon={CreditCardIcon}
-                  title="PayPal"
-                  description="Pay securely with PayPal"
-                  selected={paymentMethod === 'paypal'}
-                  onClick={() => setPaymentMethod('paypal')}
-                />
-              </div>
+                    <PaymentOption
+                      icon={GiftIcon}
+                      title="Gift Card"
+                      description="Redeem a gift card"
+                      selected={paymentMethod === 'giftcard'}
+                      onClick={() => setPaymentMethod('giftcard')}
+                    />
 
-              {/* Payment Form */}
-              {renderPaymentForm()}
-              {renderCryptoPayment()}
+                    <PaymentOption
+                      icon={CreditCardIcon}
+                      title="PayPal"
+                      description="Pay securely with PayPal"
+                      selected={paymentMethod === 'paypal'}
+                      onClick={() => setPaymentMethod('paypal')}
+                    />
+                  </div>
+
+                  {/* Payment Form */}
+                  {renderPaymentForm()}
+                  {renderCryptoPayment()}
+                </>
+              )}
             </div>
           </div>
         </div>
