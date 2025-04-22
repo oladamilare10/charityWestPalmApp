@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import QRCode from 'react-qr-code';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { banners } from '../assets';
-import { CheckCircleIcon, HeartIcon, ShieldCheckIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, HeartIcon, ShieldCheckIcon, GlobeAltIcon, ClipboardIcon } from '@heroicons/react/24/outline';
+
+const cryptoAddresses = {
+  BTC: import.meta.env.VITE_BTC_ADDRESS_ONE,
+  ETH: import.meta.env.VITE_ETH_ADDRESS_ONE,
+  LTC: import.meta.env.VITE_LTC_ADDRESS_ONE,
+  USDT: import.meta.env.VITE_USDT_ADDRESS_ONE,
+  BCH: import.meta.env.VITE_BTCH_ADDRESS_ONE,
+};
 
 const donationTiers = [
   {
@@ -34,6 +43,15 @@ const donationTiers = [
 ];
 
 const ChildOfHope = () => {
+  const [selectedCrypto, setSelectedCrypto] = useState(null);
+  const [copiedAddress, setCopiedAddress] = useState('');
+
+  const handleCopyAddress = (crypto, address) => {
+    navigator.clipboard.writeText(address);
+    setCopiedAddress(crypto);
+    setTimeout(() => setCopiedAddress(''), 2000);
+  };
+
   return (
     <>
       <Header />
@@ -178,12 +196,63 @@ const ChildOfHope = () => {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{tier.title}</h3>
                     <p className="text-gray-600 mb-4">{tier.description}</p>
                     <div className="text-sm text-gray-500 mb-4">{tier.impact}</div>
-                    <Link
-                      to={`/campaign-payment?campaign=child-of-hope&amount=${tier.amount}`}
-                      className="block w-full text-center bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors"
-                    >
-                      Donate ${tier.amount}
-                    </Link>
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-full">
+                        <div className="mb-4">
+                          <select
+                            value={selectedCrypto}
+                            onChange={(e) => setSelectedCrypto(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                          >
+                            <option value="">Select Cryptocurrency</option>
+                            {Object.keys(cryptoAddresses).map((crypto) => (
+                              <option key={crypto} value={crypto}>{crypto}</option>
+                            ))}
+                          </select>
+                        </div>
+                        {selectedCrypto && (
+                          <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                            <div className="text-sm font-medium text-gray-700 mb-2">
+                              {selectedCrypto} Address:
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-xs bg-white p-2 rounded border flex-1 overflow-hidden overflow-ellipsis">
+                                {cryptoAddresses[selectedCrypto]}
+                              </div>
+                              <button
+                                onClick={() => handleCopyAddress(selectedCrypto, cryptoAddresses[selectedCrypto])}
+                                className="p-2 text-indigo-600 hover:text-indigo-800"
+                                title="Copy address"
+                              >
+                                <ClipboardIcon className="h-5 w-5" />
+                              </button>
+                            </div>
+                            {copiedAddress === selectedCrypto && (
+                              <div className="text-xs text-green-600 mt-1">
+                                Address copied!
+                              </div>
+                            )}
+                            <div className="mt-4">
+                              <QRCode
+                                value={cryptoAddresses[selectedCrypto]}
+                                size={128}
+                                level="M"
+                                className="mx-auto"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full text-center">
+                        <div className="text-sm text-gray-500 mb-2">- or -</div>
+                        <Link
+                          to={`/campaign-payment?campaign=child-of-hope&amount=${tier.amount}`}
+                          className="block w-full text-center bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors"
+                        >
+                          Donate ${tier.amount}
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               ))}
