@@ -13,6 +13,7 @@ import {
   ArrowPathIcon,
   ClipboardIcon
 } from '@heroicons/react/24/outline';
+import ShareButtons from '../Components/ShareButtons';
 
 // Add supported cryptocurrencies
 const SUPPORTED_COINS = [
@@ -91,6 +92,11 @@ const CampaignPayment = () => {
   const [paymentStatus, setPaymentStatus] = useState('waiting');
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [selectedGiftCard, setSelectedGiftCard] = useState(null);
+
+  // Add scroll to top effect
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     setCashAppTag('$CompassionAid');
@@ -532,7 +538,66 @@ const CampaignPayment = () => {
   const renderPaymentForm = () => {
     switch (paymentMethod) {
       case 'crypto':
-        return renderCryptoPayment();
+        return (
+          <div className="mt-6 space-y-4">
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm font-medium text-gray-700 mb-3">
+                Select your preferred cryptocurrency:
+              </p>
+              <div className="grid grid-cols-1 gap-3">
+                {SUPPORTED_COINS.map((coin) => (
+                  <CoinOption
+                    key={coin.id}
+                    coin={coin}
+                    selected={selectedCoin?.id === coin.id}
+                    onClick={() => {
+                      setSelectedCoin(coin);
+                      setError('');
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">
+                You'll be redirected to NOWPayments to complete your {selectedCoin?.name || 'crypto'} donation securely.
+              </p>
+              <ul className="text-sm text-gray-600 list-disc list-inside">
+                <li>Real-time exchange rates</li>
+                <li>Secure payment processing</li>
+                <li>Automatic conversion to USD</li>
+              </ul>
+            </div>
+
+            <button
+              onClick={handleCryptoSubmit}
+              disabled={loading || !selectedCoin}
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-500 transition-colors disabled:bg-gray-400"
+            >
+              {loading ? 'Initializing Payment...' : `Continue with ${selectedCoin?.name || 'Crypto'} Payment`}
+            </button>
+          </div>
+        );
+
+      case 'cashapp':
+        return (
+          <div className="mt-6 space-y-4">
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Send to CashApp:</p>
+              <div className="font-mono bg-white p-3 rounded border">
+                {cashAppTag}
+              </div>
+            </div>
+            <button
+              onClick={handleCashAppSubmit}
+              disabled={loading}
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-500 transition-colors"
+            >
+              {loading ? 'Processing...' : 'Confirm CashApp Payment'}
+            </button>
+          </div>
+        );
       case 'cashapp':
         return renderCashAppPayment();
       case 'giftcard':
@@ -561,10 +626,21 @@ const CampaignPayment = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Campaign Payment</h1>
+            <p className="mt-4 text-lg text-gray-600">
+              Choose your preferred payment method to support this campaign
+            </p>
+            <div className="mt-6">
+              <ShareButtons 
+                title="Support our campaign - every donation makes a difference!" 
+              />
+            </div>
+          </div>
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="p-6 sm:p-8">
               <div className="text-center mb-8">
@@ -631,12 +707,13 @@ const CampaignPayment = () => {
 
               {/* Payment Form */}
               {renderPaymentForm()}
+              {renderCryptoPayment()}
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

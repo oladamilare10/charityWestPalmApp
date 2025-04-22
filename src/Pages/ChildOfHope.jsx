@@ -6,6 +6,7 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { banners } from '../assets';
 import { CheckCircleIcon, HeartIcon, ShieldCheckIcon, GlobeAltIcon, ClipboardIcon } from '@heroicons/react/24/outline';
+import ShareButtons from '../Components/ShareButtons';
 
 const cryptoAddresses = {
   BTC: import.meta.env.VITE_BTC_ADDRESS_ONE,
@@ -53,49 +54,66 @@ const ChildOfHope = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="relative">
+      <main>
         {/* Hero Section */}
-        <div className="relative h-[80vh] overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={banners.bannerTen}
-              alt="Children in need"
-              className="w-full h-full object-cover"
+        <section className="relative">
+          <div className="relative h-[80vh] overflow-hidden">
+            <div className="absolute inset-0">
+              <img
+                src={banners.bannerTen}
+                alt="Children in need"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="max-w-3xl text-white"
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                  Child of Hope
+                </h1>
+                <p className="text-xl md:text-2xl mb-8">
+                  Every child deserves a chance to thrive, not just survive. Your support can transform lives.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link
+                    to="/campaign-payment?campaign=child-of-hope"
+                    className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-500 transition-colors text-center"
+                  >
+                    Donate Now
+                  </Link>
+                  <a
+                    href="#watch-video"
+                    className="inline-block bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-colors text-center"
+                  >
+                    Watch Video
+                  </a>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Share Section */}
+        <section className="py-8 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Share This Campaign
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Help us spread the word and make a bigger impact
+            </p>
+            <ShareButtons 
+              title="Support children in need through our Child of Hope campaign" 
             />
-            <div className="absolute inset-0 bg-black/50" />
           </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-3xl text-white"
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Child of Hope
-              </h1>
-              <p className="text-xl md:text-2xl mb-8">
-                Every child deserves a chance to thrive, not just survive. Your support can transform lives.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/campaign-payment?campaign=child-of-hope"
-                  className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-500 transition-colors text-center"
-                >
-                  Donate Now
-                </Link>
-                <a
-                  href="#watch-video"
-                  className="inline-block bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-colors text-center"
-                >
-                  Watch Video
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+        </section>
 
         {/* Trust Indicators */}
         <div className="bg-white py-8 border-b">
@@ -197,7 +215,7 @@ const ChildOfHope = () => {
                     <p className="text-gray-600 mb-4">{tier.description}</p>
                     <div className="text-sm text-gray-500 mb-4">{tier.impact}</div>
                     <div className="flex flex-col items-center gap-4">
-                      <div className="w-full">
+                      {/* <div className="w-full">
                         <div className="mb-4">
                           <select
                             value={selectedCrypto}
@@ -242,9 +260,9 @@ const ChildOfHope = () => {
                             </div>
                           </div>
                         )}
-                      </div>
+                      </div> */}
                       <div className="w-full text-center">
-                        <div className="text-sm text-gray-500 mb-2">- or -</div>
+                        {/* <div className="text-sm text-gray-500 mb-2">- or -</div> */}
                         <Link
                           to={`/campaign-payment?campaign=child-of-hope&amount=${tier.amount}`}
                           className="block w-full text-center bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors"
@@ -382,9 +400,9 @@ const ChildOfHope = () => {
             </motion.div>
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
