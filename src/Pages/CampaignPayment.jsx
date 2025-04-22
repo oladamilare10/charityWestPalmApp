@@ -145,7 +145,7 @@ const CampaignPayment = () => {
           order_id: `CHILD-OF-HOPE-${Date.now()}`,
           order_description: 'Donation to Child of Hope Campaign',
           ipn_callback_url: 'https://compassionaid.love/api/crypto-webhook',
-          success_url: `${window.location.origin}/thank-you`,
+          success_url: `${window.location.origin}/thank-you/?campaign=child-of-hope&amount=${amount}`,
           cancel_url: `${window.location.origin}/campaign-payment`
         })
       });
@@ -166,7 +166,7 @@ const CampaignPayment = () => {
     try {
       const details = await actions.order.capture();
       sendMessage('New PayPal donation: $' + amount + ' - Order ID: ' + details.id);
-      navigate('/thank-you', { 
+      navigate('/thank-you/?campaign=child-of-hope&amount=' + amount, { 
         state: { 
           amount,
           method: 'PayPal',
@@ -228,7 +228,7 @@ const CampaignPayment = () => {
         case 'finished':
         case 'confirmed':
           await sendMessage('Crypto payment confirmed: $' + amount + '\nCurrency: ' + selectedCoin.name + '\nPayment ID: ' + paymentId);
-          navigate('/thank-you', {
+          navigate('/thank-you/?campaign=child-of-hope&amount=' + amount, {
             state: {
               amount,
               method: selectedCoin.name,
@@ -418,7 +418,7 @@ const CampaignPayment = () => {
     setLoading(true);
     try {
       await sendMessage('New CashApp donation intent: $' + amount + '\nTag: ' + cashAppTag);
-      navigate('/thank-you', {
+      navigate('/thank-you/?campaign=child-of-hope&amount=' + amount, {
         state: {
           amount,
           method: 'CashApp',
@@ -448,7 +448,7 @@ const CampaignPayment = () => {
       }
 
       await sendMessage(`New gift card donation:\nAmount: $${amount}\nType: ${selectedGiftCard.name}\nCode: ${giftCardCode}`);
-      navigate('/thank-you', {
+      navigate('/thank-you/?campaign=child-of-hope&amount=' + amount, {
         state: {
           amount,
           method: `${selectedGiftCard.name}`,
