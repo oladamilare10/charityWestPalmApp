@@ -14,6 +14,7 @@ import {
   ClipboardIcon
 } from '@heroicons/react/24/outline';
 import ShareButtons from '../Components/ShareButtons';
+import LaunchButton from '../Components/modal/LaunchButton';
 
 // Add supported cryptocurrencies
 const SUPPORTED_COINS = [
@@ -654,6 +655,7 @@ const CampaignPayment = () => {
               <ShareButtons 
                 title="Support our campaign - every donation makes a difference!" 
               />
+              <LaunchButton button className={`mx-auto mt-8`} />
             </div>
           </div>
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">

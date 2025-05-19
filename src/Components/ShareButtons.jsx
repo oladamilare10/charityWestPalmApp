@@ -59,7 +59,7 @@ const ShareButtons = ({ url, title, onShareImage }) => {
           </button>
         )}
       </div>
-      <LaunchButton button className={`mx-auto`} />
+      {/* <LaunchButton button className={`mx-auto`} /> */}
     </div>
   );
 };
