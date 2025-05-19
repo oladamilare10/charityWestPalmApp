@@ -7,6 +7,8 @@ import Footer from '../Components/Footer';
 import { banners } from '../assets';
 import { CheckCircleIcon, HeartIcon, ShieldCheckIcon, GlobeAltIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import ShareButtons from '../Components/ShareButtons';
+import PhoneModal from '../Components/modal/PhoneModal';
+import LaunchButton from '../Components/modal/LaunchButton';
 
 const cryptoAddresses = {
   BTC: import.meta.env.VITE_BTC_ADDRESS_ONE,
@@ -46,6 +48,13 @@ const donationTiers = [
 const ChildOfHope = () => {
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [copiedAddress, setCopiedAddress] = useState('');
+  const [showPhoneModal, setShowPhoneModal] = useState(true);
+  const handlePhoneModalClose = () => {
+    setShowPhoneModal(false);
+  };
+  const handlePhoneModalOpen = () => {
+    setShowPhoneModal(true);
+  };
 
   const handleCopyAddress = (crypto, address) => {
     navigator.clipboard.writeText(address);
@@ -55,6 +64,7 @@ const ChildOfHope = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* {showPhoneModal && <PhoneModal />} */}
       <Header />
       <main>
         {/* Hero Section */}
@@ -114,6 +124,9 @@ const ChildOfHope = () => {
             />
           </div>
         </section>
+
+        {/* Phone Modal */}
+        <LaunchButton button className={`mx-auto`} />
 
         {/* Trust Indicators */}
         <div className="bg-white py-8 border-b">

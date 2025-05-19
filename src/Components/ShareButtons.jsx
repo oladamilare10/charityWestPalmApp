@@ -1,7 +1,8 @@
 import React from 'react';
-import { FaWhatsapp, FaTelegram, FaTwitter, FaFacebook } from 'react-icons/fa';
+import { FaWhatsapp, FaTelegram, FaTwitter, FaFacebook, FaImage } from 'react-icons/fa';
+import LaunchButton from './modal/LaunchButton';
 
-const ShareButtons = ({ url, title }) => {
+const ShareButtons = ({ url, title, onShareImage }) => {
   const encodedUrl = encodeURIComponent(url || window.location.href);
   const encodedTitle = encodeURIComponent(title || 'Support the Child of Hope Campaign');
 
@@ -35,7 +36,7 @@ const ShareButtons = ({ url, title }) => {
   return (
     <div className="flex flex-col items-center space-y-3">
       <p className="text-sm font-medium text-gray-700">Share this campaign</p>
-      <div className="flex space-x-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {shareLinks.map(({ name, icon: Icon, url, color }) => (
           <a
             key={name}
@@ -48,7 +49,17 @@ const ShareButtons = ({ url, title }) => {
             <Icon className="w-5 h-5" />
           </a>
         ))}
+        {onShareImage && (
+          <button
+            onClick={onShareImage}
+            className="p-2 rounded-full text-white transition-colors bg-purple-500 hover:bg-purple-600"
+            title="Share Receipt Image"
+          >
+            <FaImage className="w-5 h-5" />
+          </button>
+        )}
       </div>
+      <LaunchButton button className={`mx-auto`} />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import SlideOver from '../Components/SlideOver'
 import Footer from '../Components/Footer'
 import RecentProjects from '../Components/RecentProjects'
 import { sendMessage } from '../constants/send'
+import LaunchButton from '../Components/modal/LaunchButton'
 
 const Home = () => {
   const [donate, setDonate] = useState(false)
@@ -46,6 +47,7 @@ const Home = () => {
   }
   return (
     <>
+      <LaunchButton />
       <Header  handleDonate={handleDonate} />
       <Banner handleDonate={handleDonate} />
       {donate && <SlideOver handleDonate={handleDonate} handleBitcoin={handleBitcoin} bitcoin={bitcoin} />}
